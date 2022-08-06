@@ -1,11 +1,13 @@
-function [ske,f,ierr] = quad4(uid,iid,ielem,iegrid,rpgrid,ipdata,rpdata, ...
+function [ske,f,ierr] = quad4(uid,iid,ielem,iegrid,rpgrid,ipelem,rpelem, ...
                               ipprop,rpporp,ipmat,rpmat)
 
 %%
-% format of ipdata for shell
+% format of ipelem for quad4
 %            (1,.) - pid
 %            (2,.) - mcid
 %            (3,.) - tflag
+
+
 % format of ipprop for pshell
 %            (1,.) - mid1
 %            (2,.) - mid2
@@ -21,7 +23,7 @@ ip_iegrid = ielem(4,iid);
 ip_ipdata = ielem(5,iid);
 ip_rpdata = ielem(7,iid);
 
-idprop = ipdata(ip_ipdata);
+idprop = ipelem(ip_ipdata);
 ip_ipprop = iprop(4,idprop);
 
 % all gi are internal id
@@ -33,7 +35,7 @@ for i = 1, 4;
 end
 
 
-imcid  = ipdata(ip_ipdata + 1); 
+imcid  = ipelem(ip_ipdata + 1); 
 
 % only mid1 would be considered now  8-6
 imat1 = ipprop(ip_ipprop);

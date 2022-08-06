@@ -1,0 +1,30 @@
+
+iprop(7,nprop)
+	(1,.) - id
+	(2,.) - usrid
+	(3,.) - iptype
+	(4,.) - pointer to ipprop
+	(5,.) - nipprop
+	(6,.) - pointer to rpprop
+	(7,.) - nrpporp
+
+ipprop(*)
+
+PSHELL:
+	(1,.) - MID1
+	(2,.) - MID2
+	(3,.) - MID3
+	(4,.) - MID4
+	(5,.) - TFLAG
+	
+
+rpprop(*)
+
+PSHELL:
+	(1,.) - T
+	(2,.) - 12i/t**3
+	(3,.) - TS/TFLAG
+	(4,.) - NSM
+	(5,.) - Z1
+	(6,.) - Z2
+

@@ -1,14 +1,14 @@
-
-
 imat(7,nmat)
-    (1,.) - id
+      	(1,.) - id
 	(2,.) - usrid
 	(3,.) - imattype,
 	(4,.) - pointer to ipmat
-    (5,.) - nipmat, 
+    	(5,.) - nipmat, 
 	(6,.) - pointer rpmat,
 	(7,.) - nrpmat
-	
+
+ipmat(*)	
+
 
 rpmat(*)
 
@@ -17,4 +17,6 @@ MAT1:
 	(2,.) - G
 	(3,.) - NU
 	(4,.) - RHO
+
+
 	

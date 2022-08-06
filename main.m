@@ -4,13 +4,10 @@ model.igrid  = [];   % igrid(3,ngrid)
 model.ipgrid = [];
 model.rpgrid = [];   % rgrid(3,ngrid)
 
-model.ielem  = [];   % ielem(8,numel)
-                     % 1 - id  2 - usrid  3 - ietype  4 - pointer to iegrid
-                     % 5 - pointer to ipdata  6 - nipdata
-                     % 7 - pointer to rpdata  8 - nrpdata
+model.ielem  = [];   
 model.iegrid = [];   % 1-dim
-model.ipdata = [];   % 1-dim
-model.rpdata = [];   % 1-dim
+model.ipelem = [];   % 1-dim
+model.rpelem = [];   % 1-dim
 
 model.iprop = [];    % iprop(7,nprop)
                      % 1 - id, 2 - usrid, 3 - iptype, 4 - pointer to ipprop

@@ -1,0 +1,29 @@
+
+
+ielem(8,nelem)
+	 (1,.) - id
+	 (2,.) - usrid
+	 (3,.) - ietype
+	 (4,.) - pointer to iegrid
+	 (5,.) - pointer to ipelem
+	 (6,.) - nipelem
+	 (7,.) - pointer to rpelem
+	 (8,.) - nrpelem
+
+ipelem(*)
+
+CQUAD4:
+	(1,*) - pid
+	(2,*) - MCID_flag
+	(3,*) - MCID
+	(4.*) - TFlag
+
+rpelem(*)
+
+CQUAD4:
+	(1,.) - THETA
+	(2,.) - ZOFFS
+	(3,.) - T1
+	(4,.) - T2
+	(5,.) - T3
+	(6,.) - T4
