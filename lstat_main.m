@@ -9,14 +9,14 @@ istsub = model.istsub;
 nelem = model.nelem;
 ielem = model.ielem;
 
-for iload = 1, nstsub
+for iload = 1:nstsub
     if (istsub(3,1) ~= 1) 
         % skip nonlinear
         continue
     end
     
     
-    for ie = 1, nelem
+    for ie = 1: nelem
         ietype = ielem(3,ie);
         if (ietype == 3)
             % quad4

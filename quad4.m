@@ -1,4 +1,4 @@
-function [ske,f,ierr] = quad4(uid,iid,ielem,iegrid,rpgrid,ipelem,rpelem, ...
+function [ske,f,ierr] = quad4(eiid,ielem,iegrid,rpgrid,ipelem,rpelem, ...
                               ipprop,rpporp,ipmat,rpmat)
 
 %%
@@ -19,9 +19,9 @@ ierr= 0;
 
 coords = zeros(3,4);
 
-ip_iegrid = ielem(4,iid);
-ip_ipdata = ielem(5,iid);
-ip_rpdata = ielem(7,iid);
+ip_iegrid = ielem(4,eiid);
+ip_ipdata = ielem(5,eiid);
+ip_rpdata = ielem(7,eiid);
 
 idprop = ipelem(ip_ipdata);
 ip_ipprop = iprop(4,idprop);
@@ -29,7 +29,7 @@ ip_ipprop = iprop(4,idprop);
 % all gi are internal id
 gi = zeros(4,1);
 
-for i = 1, 4;
+for i = 1:4
    gi(i) = iegrid(ip_iegrid + i - 1);
    coords(:,i) = rpgrid(:,gi(i));
 end
@@ -39,9 +39,30 @@ imcid  = ipelem(ip_ipdata + 1);
 
 % only mid1 would be considered now  8-6
 imat1 = ipprop(ip_ipprop);
+imat2 = ipprop(ip_ipprop+1);
+imat3 = ipprop(ip_ipprop+2);
+imat4 = ipprop(ip_ipprop+3);
 
+if (imat1 ~=0 && (imat2 == 0 || imat2 == -1) && imat3 == 0 && imat4 == 0)
+    % PLANE STRESS OR PLANE STRAIN
+    
+    if (imat2 == -1) 
+        strtype = 'PLANESTRAIN';
+    else
+        strtype = 'PLANESTRESS';
+    end
+    
+elseif (imat1 ~=0 && imat2 ~=0 && imat3 ==0 && imat4 == 0)
+    % THINPLATE or MINDLINPLATE
+    
+end
 
+[D,ierr] = shellsmat(strtype,eiid,ielem,ipelem,rpelem,piid,iprop,ipprop,...
+                     rpprop,imat,ipmat,rpmat);
 
+if (ierr ~= 0)
+    return
+end
 
 
 
