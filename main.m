@@ -2,15 +2,27 @@
 
 model.igrid  = [];   % igrid(3,ngrid)
 model.ipgrid = [];
-model.rpgrid = [];
+model.rpgrid = [];   % rgrid(3,ngrid)
 
-model.ielem  = [];   % ielem(9,numel)
+model.ielem  = [];   % ielem(8,numel)
                      % 1 - id  2 - usrid  3 - ietype  4 - pointer to iegrid
-                     % 5 - niegrid  6 - pointer to ipdata  7 - nipdata
-                     % 8 - pointer to rpdata  9 - nrpdata
+                     % 5 - pointer to ipdata  6 - nipdata
+                     % 7 - pointer to rpdata  8 - nrpdata
 model.iegrid = [];   % 1-dim
 model.ipdata = [];   % 1-dim
 model.rpdata = [];   % 1-dim
+
+model.iprop = [];    % iprop(7,nprop)
+                     % 1 - id, 2 - usrid, 3 - iptype, 4 - pointer to ipprop
+                     % 5 - nipprop, 6 - pointer rpprop, 7 - nrpprop
+model.ipprop = [];
+model.rpprop = [];
+
+model.imat  = [];    % imat(7,nmat)
+                     % 1 - id, 2 - usrid, 3 - iptype, 4 - pointer to ipmat
+                     % 5 - nipmat, 6 - pointer rpmat, 7 - nrpmat
+model.ipmat = [];
+model.rpmat = [];
 
 model.iforce = [];   % iforce(3,nfrc)
 model.ipfrc  = [];
@@ -23,7 +35,6 @@ model.rpspc  = [];
 model.inlprm  = [];
 model.ipnlprm = [];
 model.rpnlprm = [];
-
 
 % isubtype
 % 1 - STAT
@@ -38,14 +49,12 @@ model.istsub = [];  % static sub isub
                      % 3 - type (LINEAR or NLSTAT)
                      % 4 - pointer to ipstsub  5 - nipstsub
                      % 6 - pointer to rpstsub  7 - nrpstsub
-                     
 model.ipstsub = [];  
 model.rpstsub = [];
 
 model.nsub   = 0;
 model.nstsub = 0;
 model.nnlstt = 0;
-
 
 model.ngrid = 0;
 model.nelem = 0;
