@@ -1,11 +1,13 @@
-imat(7,nmat)
-      	(1,.) - id
-	(2,.) - usrid
-	(3,.) - imattype,
-	(4,.) - pointer to ipmat
-    	(5,.) - nipmat, 
-	(6,.) - pointer rpmat,
-	(7,.) - nrpmat
+imat(6,nmat)
+    (1,.) - usrid
+	(2,.) - imattype,
+	(3,.) - pointer to ipmat
+    (4,.) - nipmat, 
+	(5,.) - pointer rpmat,
+	(6,.) - nrpmat
+
+imattype:
+    1 - MAT1
 
 ipmat(*)	
 

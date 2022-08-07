@@ -15,15 +15,17 @@ model.iprop = [];    % iprop(7,nprop)
 model.ipprop = [];
 model.rpprop = [];
 
-model.imat  = [];    % imat(7,nmat)
-                     % 1 - id, 2 - usrid, 3 - iptype, 4 - pointer to ipmat
-                     % 5 - nipmat, 6 - pointer rpmat, 7 - nrpmat
+model.imat  = [];    
 model.ipmat = [];
 model.rpmat = [];
 
-model.iforce = [];   % iforce(3,nfrc)
+model.iforce = [];   % iforce(7,nfrc)
 model.ipfrc  = [];
 model.rpfrc  = [];
+
+model.ipres  = [];   % ipres(7,npres)
+model.ippres = [];
+model.rppres = [];
 
 model.ispc   = [];
 model.ipspc  = [];
@@ -42,10 +44,10 @@ model.ipsub  = [];
 model.rpsub  = [];
 
 model.istsub = [];  % static sub isub
-                     % 1 - id   2 -  usr id
-                     % 3 - type (LINEAR or NLSTAT)
-                     % 4 - pointer to ipstsub  5 - nipstsub
-                     % 6 - pointer to rpstsub  7 - nrpstsub
+                     % 1 -  usr id
+                     % 2 - type (LINEAR or NLSTAT)
+                     % 3 - pointer to ipstsub  4 - nipstsub
+                     % 5 - pointer to rpstsub  6 - nrpstsub
 model.ipstsub = [];  
 model.rpstsub = [];
 
@@ -58,6 +60,7 @@ model.nelem = 0;
 model.nmat  = 0;
 model.nprop = 0;
 model.nforce = 0;
+model.npres  = 0;
 model.nspc = 0;
 
 % local var

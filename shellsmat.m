@@ -43,7 +43,7 @@ end
 
 imat1 = ipprop(ip_ipprop);
 
-imattype = imat(3,imat1);
+imattype = imat(2,imat1);
 
 E   = rpmat(imat1);
 G   = rpmat(imat1 + 1);

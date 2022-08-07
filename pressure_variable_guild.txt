@@ -1,0 +1,19 @@
+ipres(6,npres)
+    (1,.) - usrid
+    (2,.) - iprestype
+    (3,.) - pointer to ippres
+    (4,.) - nippres
+    (5,.) - pointer to rppres
+    (6,.) - nrppres
+
+iprestype:
+    1 - pload1
+    2 - pload2
+    3 - pload4
+
+
+ippres(*)
+
+
+
+rppres(*)

@@ -65,7 +65,7 @@ for i = 1:ngint
             b(3,2*i-1:2*i) = subb;
         end
         
-        ks  = ks + b' * D * b;
+        ks  = ks + b' * D * b * wc(i) * detj;
     elseif (strcmp(strtype,'THINPLATE'))
         ierr = 1;
         return;
@@ -83,7 +83,7 @@ dofloc = repmat(gi,1,6);
 dofloc = (dofloc - 1) * 6;
 
 dofloc = dofloc + repmat([1:6],6,1);
-dofloc = reshape(dofloc',1,[]);
+dofloc = reshape(dofloc',[],1);
 
 ke = zeros(24,24);
 
