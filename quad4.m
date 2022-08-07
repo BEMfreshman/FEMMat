@@ -1,5 +1,5 @@
-function [ske,f,ierr] = quad4(eiid,ielem,iegrid,rpgrid,ipelem,rpelem, ...
-                              ipprop,rpporp,ipmat,rpmat)
+function [ke,ierr] = quad4(eiid,ielem,iegrid,rpgrid,ipelem,rpelem, ...
+                              ipprop,rpprop,ipmat,rpmat)
 
 %%
 % format of ipelem for quad4
@@ -57,13 +57,26 @@ elseif (imat1 ~=0 && imat2 ~=0 && imat3 ==0 && imat4 == 0)
     
 end
 
+% build shell coordinate system, however this trnsm is used to 
+% trans coord in element cord system to basic system
+[ltobtrnsm] = shellcord(eid,ielem,iegrid,rpgrid);
+
+btoltrnsm = zeros(3,4);
+btoltrnsm(1:3,1:3) = ltobtrnsm(1:3,1:3)';
+btoltrnsm(:,4) = ltobtrnsm(:,4);
+
+lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
+
 [D,ierr] = shellsmat(strtype,eiid,ielem,ipelem,rpelem,piid,iprop,ipprop,...
                      rpprop,imat,ipmat,rpmat);
-
 if (ierr ~= 0)
     return
 end
 
+[ke,ierr] = shellk(strtype,D,lcoords(1:2,:));
+if (ierr ~= 0)
+    return
+end
 
 
 

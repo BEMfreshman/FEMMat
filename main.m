@@ -61,7 +61,6 @@ model.nforce = 0;
 model.nspc = 0;
 
 % local var
-ierr   = 0;
 nstt   = model.nstsub;   % number of static analysis (include linear and nonlinear)
 nnlstt = model.nnlstt;   % number of nonlinear static analysis
 
