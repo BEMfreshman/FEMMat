@@ -1,4 +1,4 @@
-function [ke,ierr] = quad4(eiid,ielem,iegrid,rpgrid,ipelem,rpelem, ...
+function [ke,dofloc,ierr] = quad4(eiid,ielem,iegrid,rpgrid,ipelem,rpelem, ...
                               ipprop,rpprop,ipmat,rpmat)
 
 %%
@@ -59,11 +59,7 @@ end
 
 % build shell coordinate system, however this trnsm is used to 
 % trans coord in element cord system to basic system
-[ltobtrnsm] = shellcord(eid,ielem,iegrid,rpgrid);
-
-btoltrnsm = zeros(3,4);
-btoltrnsm(1:3,1:3) = ltobtrnsm(1:3,1:3)';
-btoltrnsm(:,4) = ltobtrnsm(:,4);
+[~,btoltrnsm] = shellcord(eid,ielem,iegrid,rpgrid);
 
 lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
 
@@ -73,12 +69,9 @@ if (ierr ~= 0)
     return
 end
 
-[ke,ierr] = shellk(strtype,D,lcoords(1:2,:));
+[ke,dofloc,ierr] = shellk(strtype,D,gi,lcoords(1:2,:));
 if (ierr ~= 0)
     return
 end
-
-
-
 
 end

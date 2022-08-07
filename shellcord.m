@@ -1,10 +1,10 @@
-function [trnsm] = shellcord(eid,ielem,iegrid,rpgrid)
-% trnsm (3,4)
-% trnsm (1:3,1:3) - rotational transformation mtx
-% trnsm (1:3,4)   - orginal point
+function [ltobtrnsm,btoltrnsm] = shellcord(eid,ielem,iegrid,rpgrid)
+% ltobtrnsm (3,4)
+% ltobtrnsm (1:3,1:3) - rotational transformation mtx
+% ltobtrnsm (1:3,4)   - orginal point
 
-% {x}b = {x}0 + [T]{x}l   ==> global  =  origin + trnsm * local
-% T * T' = T' * T = I;
+% {x}b = {x}0 + [ltobtrnsm]{x}l   ==> global  =  origin + trnsm * local
+% ltobtrnsm * ltobtrnsm' = ltobtrnsm' * ltobtrnsm = I;
 
 ip_iegrid = ielem(4,eid);
 
@@ -15,13 +15,13 @@ for i = 1:4
     coords(:,i) = rpgrid(:,gi);
 end
 
-trnsm = zeros(3,4);
+ltobtrnsm = zeros(3,4);
 
 % the first point is the original point
 % the 1st and 2nd point to define x axis
 % the 3rd point locate in x-y plane
 
-trnsm(:,4) = coords(:,1);
+ltobtrnsm(:,4) = coords(:,1);
 
 
 vecx = coords(:,2) - coords(:,1);
@@ -36,12 +36,14 @@ vecz = normalize(vecz);
 vecy = cross(vecx,vecz);
 vecy = normalize(vecy);
 
-trnsm(:,1) = vecx;
-trnsm(:,2) = vecy;
-trnsm(:,3) = vecz;
+ltobtrnsm(:,1) = vecx;
+ltobtrnsm(:,2) = vecy;
+ltobtrnsm(:,3) = vecz;
 
 
-
+btoltrnsm = zeros(3,4);
+btoltrnsm(1:3,1:3) = ltobtrnsm(1:3,1:3)';
+btoltrnsm(:,4) = ltobtrnsm(:,4);
 
 end
 

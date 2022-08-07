@@ -1,4 +1,4 @@
-function [ke,ierr] = shellk(strtype,D,elcoord)
+function [ke,dofloc,ierr] = shellk(strtype,D,gi,elcoord)
 
 % D -  material matrix
 
@@ -24,9 +24,10 @@ for i = 1:order
     end
 end
 
-ke = zeros(24,24);
 
 [nfun,dndl] = quad4nfun(strtype,xc);
+
+ks = zeros(8,8);
 
 for i = 1:ngint
 
@@ -51,8 +52,7 @@ for i = 1:ngint
     if (strcmp(strtype,'PLANESTRESS') || strcmp(strtype,'PLANESTRAIN'))
         b = zeros(3,8);
         
-        ks = zeros(2,2);
-        fs = zeros(2,1);
+        
         for j = 1 : 4
             dndg = invj * dndli(i,:)';
 
@@ -66,9 +66,6 @@ for i = 1:ngint
         end
         
         ks  = ks + b' * D * b;
-        
-        ke(1:2,1:2) = ks;
-
     elseif (strcmp(strtype,'THINPLATE'))
         ierr = 1;
         return;
@@ -78,6 +75,21 @@ for i = 1:ngint
     end
     
 end
+
+% ks is ready
+% calculate dof id
+
+dofloc = repmat(gi,1,6);
+dofloc = (dofloc - 1) * 6;
+
+dofloc = dofloc + repmat([1:6],6,1);
+dofloc = reshape(dofloc',1,[]);
+
+ke = zeros(24,24);
+
+ldofloc = [1,2,7,8,13,14,19,20];
+
+ke(ldocfloc,ldofloc) = ks;
 
 end
 

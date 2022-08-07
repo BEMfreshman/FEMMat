@@ -24,13 +24,18 @@ for iload = 1:nstsub
         ietype = ielem(3,ie);
         if (ietype == 3)
             % quad4
-            [ke,ierr] = quad4(eiid,model.ielem,model.iegrid,model.rpgrid,...
+            % kel (24,24)
+            [ke,dofloc,ierr] = quad4(eiid,model.ielem,model.iegrid,model.rpgrid,...
                               model.ipelem,model.rpelem,model.ipprop,...
                               model.rpprop,model.ipmat,model.rpmat);
             if (ierr ~=0) 
                 return; 
             end
-                
+               
+            [ltobtrnsm,~] = shellcord(eiid,model.ielem,model.iegrid,...
+                                      model.rpgrid);
+            
+            
             
         end
         
