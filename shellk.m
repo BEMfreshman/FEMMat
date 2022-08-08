@@ -25,7 +25,7 @@ for i = 1:order
 end
 
 
-[nfun,dndl] = quad4nfun(strtype,xc);
+[~,dndl] = quad4nfun(strtype,xc);
 
 ks = zeros(8,8);
 
@@ -79,11 +79,7 @@ end
 % ks is ready
 % calculate dof id
 
-dofloc = repmat(gi,1,6);
-dofloc = (dofloc - 1) * 6;
-
-dofloc = dofloc + repmat([1:6],6,1);
-dofloc = reshape(dofloc',[],1);
+[dofloc] = gidtodofid(gi);
 
 ke = zeros(24,24);
 

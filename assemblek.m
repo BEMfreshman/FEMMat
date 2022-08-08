@@ -1,4 +1,4 @@
-function [spak,ierr] = assmblek(kel,dofloc,ltobtrnsm,spak)
+function [spak,ierr] = assemblek(kel,dofloc,ltobtrnsm,spak)
 
     % ke (24,24)
     % ltobtrnsm(3,4);
