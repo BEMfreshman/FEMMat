@@ -25,7 +25,6 @@ for iload = 1:nstsub
     % build stiffness matrix
     for ie = 1: nelem
         eiid   = ielem(1,ie);
-        euid   = ielem(2,ie);
         ietype = ielem(3,ie);
         if (ietype == 3)
             % quad4
@@ -44,7 +43,10 @@ for iload = 1:nstsub
             
             if (ierr ~=0)
                 return;
-            end 
+            end
+        else
+            ierr = 1;
+            return;
         end
     end
     
@@ -60,13 +62,19 @@ for iload = 1:nstsub
     % 2. deal with press cards
     if (npres ~= 0)
 
-        [f,ierr] = assemblepres(model.ielem, model.npres, model.ipres, ...
-                               model.ippres, model.rppres, f);
+        [spaf,ierr] = assemblepres(model.ielem,model.iegrid,model.rpgrid,...
+                            model.ipelem, model.rpelem,model.ipprop,model.rpprop,...
+                            model.ipmat,model.rpmat,model.npres,model.ipres,...
+                            model.ippres,model.rppres, spaf);
         if (ierr ~= 0)
             return;
         end
     end
+
+
+    % spc
     
+    % solve
     
 end
 

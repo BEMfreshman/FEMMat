@@ -1,4 +1,6 @@
-function [spaf,ierr] = assemblepres(ielem,iegrid,npres,ipres,ippres,rppres,spaf)
+function [spaf,ierr] = assemblepres(ielem,iegrid,rpgrid,ipelem, rpelem,...
+                                    ipprop,rpprop,ipmat,rpmat,npres,...
+                                    ipres,ippres,rppres,spaf)
 
 % assemble pressure to f load
 ierr = 0;
