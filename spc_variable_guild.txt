@@ -1,0 +1,22 @@
+
+ispc(6,nspc)
+    (1,.) - spcid
+    (2,.) - spctype
+    (3,.) - pointer to ipspc
+    (4,.) - nipspc
+    (5,.) - pointer to rpspc
+    (6,.) - nrpspc
+
+ipspc():
+
+spc1:
+    (1,.) - g1
+    (2,.) - c1
+    (3,.) - g2
+    (4,.) - c2
+
+rrspc()
+
+spc1:
+    (1,.) - d1
+    (2,.) - d2

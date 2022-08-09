@@ -39,17 +39,11 @@ model.rpnlprm = [];
 % 1 - STAT
 % 2 - NLSTAT
 
-model.isub   = [];   % isub(7,nsub)
-model.ipsub  = [];
-model.rpsub  = [];
+model.isub   = [];
+model.rsub   = [];
 
-model.istsub = [];  % static sub isub
-                     % 1 -  usr id
-                     % 2 - type (LINEAR or NLSTAT)
-                     % 3 - pointer to ipstsub  4 - nipstsub
-                     % 5 - pointer to rpstsub  6 - nrpstsub
-model.ipstsub = [];  
-model.rpstsub = [];
+model.istsub = [];  
+model.rstsub = [];
 
 model.nsub   = 0;
 model.nstsub = 0;

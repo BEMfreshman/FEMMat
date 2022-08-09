@@ -12,12 +12,13 @@ ielem = model.ielem;
 ngrid  = model.ngrid;
 nforce = model.nforce;
 npres  = model.npres;
+nspc   = model.nspc;
 
 spak = sparse(ngrid*6,ngrid*6);
 spaf = sparse(ngrid*6,1);
 
 for iload = 1:nstsub
-    if (istsub(2,1) ~= 1) 
+    if (istsub(2,iload) ~= 1) 
         % skip nonlinear
         continue
     end
