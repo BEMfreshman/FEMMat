@@ -15,8 +15,26 @@ spc1:
     (3,.) - g2
     (4,.) - c2
 
-rrspc()
+rpspc()
 
 spc1:
     (1,.) - d1
     (2,.) - d2
+
+
+
+% --------------------------------
+%  work array in solver subroutine
+% --------------------------------
+
+nspc0  -  all activated spc number (unique spc id)
+
+wispc(,nspc0)
+    (1,.) - usrid
+    (2,.) - pointer to wipspc  (each 2 elements as a pair, 1 - gid, 2 - dof)
+    (3,.) - pointer to wrpspc
+    (4,.) - number of nodes in this spc set
+
+wipspc(*)
+
+wrpspc(*)

@@ -7,5 +7,5 @@ istsub(*,nstsub):
     (1,.) - subid
     (2,.) - static type (1 - linear   2 - nonlinear)
     (3,.) - load id
-    (4,.) - spc  id
-    
+    (4,.) - load user id
+    (5,.) - spc  id

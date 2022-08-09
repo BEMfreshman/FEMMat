@@ -17,3 +17,26 @@ ippres(*)
 
 
 rppres(*)
+
+
+% --------------------------------
+%  work array in solver subroutine
+% --------------------------------
+
+npres0  -  all activated pressure number (unique pres id)
+
+wipres(,npres0)
+    (1,.) - usrid
+    (2,.) - iprestype
+    (3,.) - pointer to wippres
+    (4,.) - number of wippres
+    (5,.) - pointer to wrppres
+    (6,.) - number of wrppres
+
+wippres(*)
+    pload2:
+    (.) - eid
+
+wrppres(*)
+    pload2:
+    (1) - pres

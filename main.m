@@ -27,9 +27,17 @@ model.ipres  = [];   % ipres(7,npres)
 model.ippres = [];
 model.rppres = [];
 
+model.wipres  = [];
+model.wippres = [];
+model.wrppres = [];
+
 model.ispc   = [];
 model.ipspc  = [];
 model.rpspc  = [];
+
+model.wispc  = [];
+model.wipspc = [];
+model.wrpspc = [];
 
 model.inlprm  = [];
 model.ipnlprm = [];
@@ -53,9 +61,15 @@ model.ngrid = 0;
 model.nelem = 0;
 model.nmat  = 0;
 model.nprop = 0;
-model.nforce = 0;
+
+model.nforce  = 0;
+model.nforce0 = 0;
+
 model.npres  = 0;
-model.nspc = 0;
+model.npres0 = 0;
+
+model.nspc  = 0;
+model.nspc0 = 0;
 
 % local var
 nstt   = model.nstsub;   % number of static analysis (include linear and nonlinear)
@@ -72,6 +86,12 @@ end
 [~,~,ierr] = renum(model);
 if (ierr ~=0)
     error('fail in renum');
+end
+
+%% prep
+[ierr] = prep(model);
+if (ierr ~= 0)
+    error('fail in prep');
 end
 
 %% solver

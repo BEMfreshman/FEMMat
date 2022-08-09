@@ -1,6 +1,6 @@
-function [fe,dofloc,ierr] = quad4f(eid,ielem,iegrid,rpgrid,ipelem,rpelem,...
+function [fel,ldofloc,ierr] = quad4f(eid,ielem,iegrid,rpgrid,ipelem,rpelem,...
                                     ipprop,rpprop,ipmat,rpmat,presid,...
-                                    ipres,ippres,rppres)
+                                    wipres,wippres,wrppres)
    
 ierr = 0;
 
@@ -51,9 +51,9 @@ end
 lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
 
 
-iprestype = ipres(2,presid);
-ip_ippres = ipres(3,presid);
-ip_rppres = ipres(5,presid);
+iprestype = wipres(2,presid);
+ip_ippres = wipres(3,presid);
+ip_rppres = wipres(5,presid);
 
 if (iprestype == 1 )
     % PLOAD1
@@ -62,7 +62,7 @@ if (iprestype == 1 )
 elseif (iprestype == 2) 
     % PLOAD2
 
-    pres = rppres(ip_rppres);
+    pres = wrppres(ip_rppres);
     [fel,ldofloc,ierr] = shellf(strtype,eid,ielem,iegrid,rpgrid,pres);
     
 elseif (iprestype == 3)
