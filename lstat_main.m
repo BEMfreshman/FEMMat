@@ -35,7 +35,7 @@ for iload = 1:nstsub
         if (ietype == 3)
             % quad4
             % kel (24,24)
-            [kel,dofloc,ierr] = quad4k(eiid,model.ielem,model.iegrid,model.rpgrid,...
+            [kel,dofloc,ierr] = quad4k(eiid,model.ielem,model.iegrid,model.rgrid,...
                                     model.ipelem,model.rpelem,model.ipprop,...
                                     model.rpprop,model.ipmat,model.rpmat);
             if (ierr ~=0) 
@@ -43,7 +43,7 @@ for iload = 1:nstsub
             end
                
             [ltobtrnsm,~] = shellcord(eiid,model.ielem,model.iegrid,...
-                                      model.rpgrid);
+                                      model.rgrid);
             
             [spak,ierr] = assemblek(kel,dofloc,ltobtrnsm,spak);
             
@@ -68,7 +68,7 @@ for iload = 1:nstsub
     % 2. deal with press cards
     if (npres0 ~= 0)
 
-        [spaf,ierr] = assemblepres(loadiid,loaduid,model.ielem,model.iegrid,model.rpgrid,...
+        [spaf,ierr] = assemblepres(loadiid,loaduid,model.ielem,model.iegrid,model.rgrid,...
                             model.ipelem, model.rpelem,model.ipprop,model.rpprop,...
                             model.ipmat,model.rpmat,model.npres0,model.wipres,...
                             model.wippres,model.wrppres, spaf);

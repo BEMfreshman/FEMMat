@@ -1,24 +1,24 @@
 imat(6,nmat)
     (1,.) - usrid
-	(2,.) - imattype,
-	(3,.) - pointer to ipmat
+    (2,.) - imattype,
+    (3,.) - pointer to ipmat
     (4,.) - nipmat, 
-	(5,.) - pointer rpmat,
-	(6,.) - nrpmat
+    (5,.) - pointer rpmat,
+    (6,.) - nrpmat
 
 imattype:
     1 - MAT1
 
-ipmat(*)	
+ipmat(*)    
 
 
 rpmat(*)
 
 MAT1:
-	(1,.) - E
-	(2,.) - G
-	(3,.) - NU
-	(4,.) - RHO
+    (1,.) - E
+    (2,.) - G
+    (3,.) - NU
+    (4,.) - RHO
 
 
-	
+    

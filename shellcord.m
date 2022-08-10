@@ -1,4 +1,4 @@
-function [ltobtrnsm,btoltrnsm] = shellcord(eid,ielem,iegrid,rpgrid)
+function [ltobtrnsm,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid)
 % ltobtrnsm (3,4)
 % ltobtrnsm (1:3,1:3) - rotational transformation mtx
 % ltobtrnsm (1:3,4)   - orginal point
@@ -12,7 +12,7 @@ coords = zeros(3,4);
 
 for i = 1:4
     gi = iegrid(ip_iegrid + i - 1);
-    coords(:,i) = rpgrid(:,gi);
+    coords(:,i) = rgrid(:,gi);
 end
 
 ltobtrnsm = zeros(3,4);

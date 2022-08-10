@@ -1,4 +1,4 @@
-function [spaf,ierr] = assemblepres(loadiid,loaduid,ielem,iegrid,rpgrid,ipelem, ...
+function [spaf,ierr] = assemblepres(loadiid,loaduid,ielem,iegrid,rgrid,ipelem, ...
                                     rpelem,ipprop,rpprop,ipmat,rpmat,npres0,...
                                     wipres,wippres,wrppres,spaf)
 
@@ -25,7 +25,7 @@ for j = 1:ni
 
     if (ietype == 3)
         % CQUAD4
-        [fel,dofloc,ierr] = quad4f(eid,ielem,iegrid,rpgrid,ipelem,rpelem,...
+        [fel,dofloc,ierr] = quad4f(eid,ielem,iegrid,rgrid,ipelem,rpelem,...
                                 ipprop,rpprop,ipmat,rpmat,presid,...
                                 wipres,wippres,wrppres);
     else
@@ -33,7 +33,7 @@ for j = 1:ni
         return;
     end
 
-    [ltobtrnsm,~] = shellcord(eid,ielem,iegrid,rpgrid);
+    [ltobtrnsm,~] = shellcord(eid,ielem,iegrid,rgrid);
 
     ltobtrnmtx = ltobtrnsm(1:3,1:3);
 

@@ -1,4 +1,4 @@
-function [fe,ierr] = shellf(strtype,eid,ielem,iegrid,rpgrid,pres)
+function [fe,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres)
 % this function is used to build fe
 % cord system has not been considered 2022-8-8
 
@@ -47,7 +47,7 @@ end
 [nfun,dndl] = quad4nfun(strtype,xc);
 % nfun (4,n)
 
-[~,btoltrnsm] = shellcord(eid,ielem,iegrid,rpgrid);
+[~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
 
 lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
 elcoord = lcoords(1:2,:);

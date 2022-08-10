@@ -1,13 +1,29 @@
 %% model data
 
-model.igrid  = [];   % igrid(3,ngrid)
-model.ipgrid = [];
-model.rpgrid = [];   % rgrid(3,ngrid)
+% model pointer
+model.ptgrid = 0;
+model.ptelem = 0;
+model.ptprop = 0;
+model.ptmat = 0;
+model.ptforce = 0;
+model.ptpres = 0;
+model.ptspc = 0;
 
-model.ielem  = [];   
+
+model.igrid  = [];   % igrid(5,ngrid)
+model.rgrid  = [];   % rgrid(3,ngrid)
+
+
+model.idelem = [];   % (2,nelem) (1,.) - usrid
+                     %           (2,.) - iid
+model.ielem  = [];
 model.iegrid = [];   % 1-dim
 model.ipelem = [];   % 1-dim
 model.rpelem = [];   % 1-dim
+
+model.liegrid = 0;
+model.lipelem = 0;
+model.lrpelem = 0;
 
 model.iprop = [];    % iprop(7,nprop)
                      % 1 - id, 2 - usrid, 3 - iptype, 4 - pointer to ipprop
@@ -15,13 +31,22 @@ model.iprop = [];    % iprop(7,nprop)
 model.ipprop = [];
 model.rpprop = [];
 
-model.imat  = [];    
+model.lipprop = 0;
+model.lrpprop = 0;
+
+model.imat  = [];
 model.ipmat = [];
 model.rpmat = [];
+
+model.lipmat = 0;
+model.lrpmat = 0;
 
 model.iforce = [];   % iforce(7,nfrc)
 model.ipfrc  = [];
 model.rpfrc  = [];
+
+model.lipfrc = 0;
+model.lrpfrc = 0;
 
 model.ipres  = [];   % ipres(7,npres)
 model.ippres = [];

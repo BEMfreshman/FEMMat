@@ -1,4 +1,4 @@
-function [fel,ldofloc,ierr] = quad4f(eid,ielem,iegrid,rpgrid,ipelem,rpelem,...
+function [fel,ldofloc,ierr] = quad4f(eid,ielem,iegrid,rgrid,ipelem,rpelem,...
                                     ipprop,rpprop,ipmat,rpmat,presid,...
                                     wipres,wippres,wrppres)
    
@@ -18,7 +18,7 @@ gi = zeros(4,1);
 
 for i = 1:4
    gi(i) = iegrid(ip_iegrid + i - 1);
-   coords(:,i) = rpgrid(:,gi(i));
+   coords(:,i) = rgrid(:,gi(i));
 end
 
 
@@ -46,7 +46,7 @@ end
 
 % build shell coordinate system, however this trnsm is used to 
 % trans coord in element cord system to basic system
-[~,btoltrnsm] = shellcord(eid,ielem,iegrid,rpgrid);
+[~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
 
 lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
 
@@ -63,7 +63,7 @@ elseif (iprestype == 2)
     % PLOAD2
 
     pres = wrppres(ip_rppres);
-    [fel,ldofloc,ierr] = shellf(strtype,eid,ielem,iegrid,rpgrid,pres);
+    [fel,ldofloc,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres);
     
 elseif (iprestype == 3)
     % PLOAD4
