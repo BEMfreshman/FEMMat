@@ -1,5 +1,8 @@
 %% model data
 
+clear;
+clc;
+
 % model pointer
 model.ptgrid = 1;
 model.ptelem = 1;
@@ -113,9 +116,9 @@ nstt   = model.nstsub;   % number of static analysis (include linear and nonline
 nnlstt = model.nnlstt;   % number of nonlinear static analysis
 
 %% pre-process
-filename = "";
+filename = "test/48model.fem";
 
-[model,~,ierr] = readfem(filename);
+[model,ierr] = readfem(filename,model);
 if (ierr ~=0 ) 
     error('fail in read fem');
 end

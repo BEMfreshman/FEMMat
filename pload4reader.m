@@ -41,7 +41,7 @@ function [model,ierr] = pload4reader(line,fid,model)
         g34 = s2d(wline,9);
     end
 
-    line = getline(fid);
+    line = fgetl(fid);
 
     keyword = line(1:8);
     kw = strtrim(keyword);
