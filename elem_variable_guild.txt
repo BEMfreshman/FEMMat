@@ -1,14 +1,13 @@
 
 
-ielem(8,nelem)
-    (1,.) - id
-    (2,.) - usrid
-    (3,.) - ietype
-    (4,.) - pointer to iegrid
-    (5,.) - pointer to ipelem
-    (6,.) - nipelem
-    (7,.) - pointer to rpelem
-    (8,.) - nrpelem
+ielem(7,nelem)
+    (1,.) - usrid
+    (2,.) - ietype
+    (3,.) - pointer to iegrid
+    (4,.) - pointer to ipelem
+    (5,.) - nipelem
+    (6,.) - pointer to rpelem
+    (7,.) - nrpelem
 
 ipelem(*)
 

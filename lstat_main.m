@@ -31,7 +31,7 @@ for iload = 1:nstsub
     % build stiffness matrix
     for ie = 1: nelem
         eiid   = ielem(1,ie);
-        ietype = ielem(3,ie);
+        ietype = ielem(2,ie);
         if (ietype == 3)
             % quad4
             % kel (24,24)

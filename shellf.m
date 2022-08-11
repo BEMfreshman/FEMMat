@@ -2,8 +2,8 @@ function [fe,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres)
 % this function is used to build fe
 % cord system has not been considered 2022-8-8
 
-ietype    = ielem(3,eid);
-ip_iegrid = ielem(4,eid);
+ietype    = ielem(2,eid);
+ip_iegrid = ielem(3,eid);
 
 if (ietype  == 2) 
     % cquad4

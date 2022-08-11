@@ -21,7 +21,7 @@ ni        = wipres(4,loadiid);
 
 for j = 1:ni
     eid    = wippres(ip_ippres+j-1);
-    ietype = ielem(3,eid);
+    ietype = ielem(2,eid);
 
     if (ietype == 3)
         % CQUAD4

@@ -1,13 +1,13 @@
 %% model data
 
 % model pointer
-model.ptgrid = 0;
-model.ptelem = 0;
-model.ptprop = 0;
-model.ptmat = 0;
-model.ptforce = 0;
-model.ptpres = 0;
-model.ptspc = 0;
+model.ptgrid = 1;
+model.ptelem = 1;
+model.ptprop = 1;
+model.ptmat = 1;
+model.ptforce = 1;
+model.ptpres = 1;
+model.ptspc = 1;
 
 
 model.igrid  = [];   % igrid(5,ngrid)
@@ -20,6 +20,8 @@ model.ielem  = [];
 model.iegrid = [];   % 1-dim
 model.ipelem = [];   % 1-dim
 model.rpelem = [];   % 1-dim
+
+model.ptelem = zeros(3,1) + 1;  % pt to iegrid, to ipelem , to rpelem
 
 model.liegrid = 0;
 model.lipelem = 0;
@@ -48,9 +50,14 @@ model.rpfrc  = [];
 model.lipfrc = 0;
 model.lrpfrc = 0;
 
+model.ptpres = zeros(2,1) + 1;  % pt to ippres, to rppres
+
 model.ipres  = [];   % ipres(7,npres)
 model.ippres = [];
 model.rppres = [];
+
+model.lippres = 0;
+model.lrppres = 0;
 
 model.wipres  = [];
 model.wippres = [];

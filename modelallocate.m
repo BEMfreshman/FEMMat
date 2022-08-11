@@ -5,7 +5,7 @@ function [model,ierr] = modelallcoate(model)
     model.rgrid = zeros(3,model.ngrid);
 
     model.idelem = zeros(2,model.nelem);
-    model.ielem  = zeros(8,nelem);
+    model.ielem  = zeros(7,nelem);
     model.iegrid = zeros(model.liegrid,1);
     model.ipelem = zeros(model.lipelem,1);
     model.rpelem = zeros(model.lrpelem,1);

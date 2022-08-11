@@ -6,7 +6,7 @@ function [ltobtrnsm,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid)
 % {x}b = {x}0 + [ltobtrnsm]{x}l   ==> global  =  origin + trnsm * local
 % ltobtrnsm * ltobtrnsm' = ltobtrnsm' * ltobtrnsm = I;
 
-ip_iegrid = ielem(4,eid);
+ip_iegrid = ielem(3,eid);
 
 coords = zeros(3,4);
 

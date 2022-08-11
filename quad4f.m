@@ -6,9 +6,9 @@ ierr = 0;
 
 coords = zeros(3,4);
 
-ip_iegrid = ielem(4,eiid);
-ip_ipdata = ielem(5,eiid);
-ip_rpdata = ielem(7,eiid);
+ip_iegrid = ielem(3,eiid);
+ip_ipdata = ielem(4,eiid);
+ip_rpdata = ielem(6,eiid);
 
 idprop = ipelem(ip_ipdata);
 ip_ipprop = iprop(4,idprop);
@@ -61,7 +61,7 @@ if (iprestype == 1 )
     return;
 elseif (iprestype == 2) 
     % PLOAD2
-
+    % to do 
     pres = wrppres(ip_rppres);
     [fel,ldofloc,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres);
     

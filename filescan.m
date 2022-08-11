@@ -39,6 +39,10 @@ function [model,ierr] = bulkscan(fid)
                 strncmpi(line(1:5),'PLOAD2',5) || ...
                 strncmpi(line(1:5),'PLOAD4',5))
             model.npres = model.npres + 1;
+            if (strncmpi(line(1:5),'PLOAD4',5))
+                model.lippres = model.lippres + 4;
+                model.lrppres = model.lrppres + 9;
+            end
         elseif (strnmcpi(line(1:3),'SPC',3)) 
             model.nspc = model.nspc + 1;
         elseif (strnmcpi(line(1:4),'MAT1',4))
@@ -47,6 +51,13 @@ function [model,ierr] = bulkscan(fid)
             model.nprop = model.nprop + 1;
         elseif (strncmpi(line(1:6),'CQUAD4',6))
             model.nelem = model.nelem;
+
+            model.liegrid = model.liegrid + 4;
+            model.lipelem = model.lipelem + 4;
+            model.lrpelem = model.lrpelem + 6;
+        else
+            ierr = 1;
+            return;
         end
     end
 

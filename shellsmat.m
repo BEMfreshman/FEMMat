@@ -2,8 +2,8 @@ function [D, ierr] = shellsmat(strtype,eiid,ielem,ipelem,rpelem,piid,...
                                 iprop,ipprop,rpprop,imat,ipmat,rpmat)
 %SHELLSMAT is used to calculate material matrix D
 
-ip_ipelem = ielem(5,eiid);
-ip_rpelem = ielem(7,eiid);
+ip_ipelem = ielem(4,eiid);
+ip_rpelem = ielem(6,eiid);
 
 % iptype    = iprop(3,piid);
 ip_ipprop = iprop(4,piid);
