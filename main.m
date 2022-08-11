@@ -63,9 +63,14 @@ model.wipres  = [];
 model.wippres = [];
 model.wrppres = [];
 
+model.ptspc = zeros(2,1) + 1;  % pt to ipspc, to rpspc
+
 model.ispc   = [];
 model.ipspc  = [];
 model.rpspc  = [];
+
+model.lipspc = 0;
+model.lrpspc = 0;
 
 model.wispc  = [];
 model.wipspc = [];

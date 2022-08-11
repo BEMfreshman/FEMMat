@@ -45,6 +45,8 @@ function [model,ierr] = bulkscan(fid)
             end
         elseif (strnmcpi(line(1:3),'SPC',3)) 
             model.nspc = model.nspc + 1;
+            model.lipspc = model.lispc + 2;
+            model.lrpspc = model.lrspc + 1;
         elseif (strnmcpi(line(1:4),'MAT1',4))
             model.nmat = model.nmat + 1;
         elseif (strncmpi(line(1:6),'PSHELL',6))
