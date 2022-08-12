@@ -12,7 +12,7 @@ if (ierr ~= 0)
 end
 
 % pre-allocate
-[model,ierr] = modelallcoate(model);
+[model,ierr] = modelallocate(model);
 
 
 % second time real read

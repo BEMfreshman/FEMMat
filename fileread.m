@@ -1,4 +1,4 @@
-function [model,ierr] = fileread(filename)
+function [model,ierr] = fileread(filename,model)
 
     ierr = 0;
 
@@ -12,7 +12,7 @@ function [model,ierr] = fileread(filename)
         line = fgetl(fid);
 
         if (strncmpi(line,'BEGIN BULK',10))
-            [model,ierr] = bulkread(fid);
+            [model,ierr] = bulkread(fid,model);
             if (ierr ~= 0)
                 return;
             end
@@ -24,7 +24,7 @@ function [model,ierr] = fileread(filename)
 end
 
 
-function [model,ierr] = bulkread(fid)
+function [model,ierr] = bulkread(fid,model)
 
     ierr = 0;
 

@@ -62,7 +62,8 @@ function [model,ierr] = bulkscan(fid,model)
             model.liegrid = model.liegrid + 4;
             model.lipelem = model.lipelem + 4;
             model.lrpelem = model.lrpelem + 6;
-        elseif (strncmpi(wline(1:1),'*',1))
+        elseif (strncmpi(wline(1:1),'*',1) || ...
+                strncmpi(wline(1:1),'+',1))
             continue;
         else
             ierr = 1;
