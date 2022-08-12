@@ -40,11 +40,11 @@ function [model,ierr] = bulkscan(fid,model)
             model.ngrid = model.ngrid+1;
         elseif (strncmpi(wline(1:5),'FORCE',5))
             model.nforce = model.nforce + 1;
-        elseif (strncmpi(wline(1:5),'PLOAD1',5) || ...
-                strncmpi(wline(1:5),'PLOAD2',5) || ...
-                strncmpi(wline(1:5),'PLOAD4',5))
+        elseif (strncmpi(wline(1:6),'PLOAD1',6) || ...
+                strncmpi(wline(1:6),'PLOAD2',6) || ...
+                strncmpi(wline(1:6),'PLOAD4',6))
             model.npres = model.npres + 1;
-            if (strncmpi(wline(1:5),'PLOAD4',5))
+            if (strncmpi(wline(1:6),'PLOAD4',6))
                 model.lippres = model.lippres + 4;
                 model.lrppres = model.lrppres + 9;
             end
