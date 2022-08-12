@@ -1,12 +1,11 @@
 
-iprop(7,nprop)
-    (1,.) - id
-    (2,.) - usrid
-    (3,.) - iptype
-    (4,.) - pointer to ipprop
-    (5,.) - nipprop
-    (6,.) - pointer to rpprop
-    (7,.) - nrpporp
+iprop(6,nprop)
+    (1,.) - usrid
+    (2,.) - iptype
+    (3,.) - pointer to ipprop
+    (4,.) - nipprop
+    (5,.) - pointer to rpprop
+    (6,.) - nrpporp
 
 ipprop(*)
 

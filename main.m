@@ -4,13 +4,13 @@ clear;
 clc;
 
 % model pointer
-model.ptgrid = 1;
-model.ptelem = 1;
-model.ptprop = 1;
-model.ptmat = 1;
-model.ptforce = 1;
-model.ptpres = 1;
-model.ptspc = 1;
+model.ncgrid = 1;
+model.ncelem = 1;
+model.ncprop = 1;
+model.ncmat = 1;
+model.ncforce = 1;
+model.ncpres = 1;
+model.ncspc = 1;
 
 
 model.igrid  = [];   % igrid(5,ngrid)
@@ -30,14 +30,16 @@ model.liegrid = 0;
 model.lipelem = 0;
 model.lrpelem = 0;
 
-model.iprop = [];    % iprop(7,nprop)
-                     % 1 - id, 2 - usrid, 3 - iptype, 4 - pointer to ipprop
-                     % 5 - nipprop, 6 - pointer rpprop, 7 - nrpprop
+model.ptprop = zeros(2,1) + 1; % pt to ipprop, to rpprop
+
+model.iprop  = [];    
 model.ipprop = [];
 model.rpprop = [];
 
 model.lipprop = 0;
 model.lrpprop = 0;
+
+model.ptmat = zeros(2,1) + 1; % pt to ipmat, pt to rpmat
 
 model.imat  = [];
 model.ipmat = [];

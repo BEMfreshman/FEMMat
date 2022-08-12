@@ -10,7 +10,7 @@ function [model,ierr] = modelallocate(model)
     model.ipelem = zeros(model.lipelem,1);
     model.rpelem = zeros(model.lrpelem,1);
 
-    model.iprop = zeros(7,model.nprop);
+    model.iprop = zeros(6,model.nprop);
     model.ipprop = zeros(model.lipprop,1);
     model.rpprop = zeros(model.lrpprop,1);
 

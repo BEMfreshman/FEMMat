@@ -20,7 +20,7 @@ function [wline,hasstr] = preprocesstext(line,maxlen)
     ed  = sta + 7;
 
     for i = 1:nf
-        hasstr(i) = isempty(strtrim(line(sta(i):ed(i))));
+        hasstr(i) = ~isempty(strtrim(wline(sta(i):ed(i))));
     end
 
 end

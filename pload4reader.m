@@ -1,5 +1,6 @@
 function [model,ierr] = pload4reader(line,fid,model)
 
+    ierr = 0;
     [wline,hasstr] = preprocesstext(line,72);
 
     if (hasstr(2) == 0 || hasstr(3) == 0)
@@ -13,7 +14,7 @@ function [model,ierr] = pload4reader(line,fid,model)
 
     iprestype = 3;
 
-    sprintf(msg,'Failed in parsing pload4 %d ',sid);
+    msg = sprintf('Failed in parsing pload4 %d ',sid);
 
     if (hasstr(4) == 0) 
         ierr = 1;
@@ -59,6 +60,9 @@ function [model,ierr] = pload4reader(line,fid,model)
         return;
     end
 
+    cid = 0;
+    cid = f2d(wline,hasstr,2,cid);
+
     n = zeros(3,1);
     for i = 3:5
         n(i - 2) = s2d(wline,i);
@@ -75,11 +79,11 @@ function [model,ierr] = pload4reader(line,fid,model)
     ippres = [eid,g1,g34,cid]';   % 4
     rppres = [p',n',sorl,ldir];   % 9
 
-    model.ipres(:,model.ptpres) = ip;
-    model.ptpres = model.prpres + 1;
+    model.ipres(:,model.ncpres) = ip;
+    model.ncpres = model.ncpres + 1;
 
-    model.ippres(ptippres:ptippres+4) = ippres;
-    model.rppres(ptrppres:ptrppres+9) = rppres;
+    model.ippres(ptippres:ptippres+4-1) = ippres;
+    model.rppres(ptrppres:ptrppres+9-1) = rppres;
 
     model.ptpres(1) = model.ptpres(1) + 4;
     model.ptpres(2) = model.ptpres(2) + 9;

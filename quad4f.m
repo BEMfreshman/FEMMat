@@ -11,7 +11,7 @@ ip_ipdata = ielem(4,eiid);
 ip_rpdata = ielem(6,eiid);
 
 idprop = ipelem(ip_ipdata);
-ip_ipprop = iprop(4,idprop);
+ip_ipprop = iprop(3,idprop);
 
 % all gi are internal id
 gi = zeros(4,1);

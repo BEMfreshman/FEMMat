@@ -1,5 +1,6 @@
 function [model,ierr] = gridreader(line,fid,model)
 
+    ierr = 0;
     [wline,hasstr] = preprocesstext(line,72);
 
     id = str2double(wline(9:16));
@@ -25,11 +26,11 @@ function [model,ierr] = gridreader(line,fid,model)
     ps = 0;
     seid = 0;
 
-    pt = model.ptgrid;
+    pt = model.ncgrid;
 
     model.igrid(:,pt) = [id, cp, cd, ps, seid]';
     model.rgrid(:,pt) = x';
 
-    model.ptgrid = model.ptgrid + 1;
+    model.ncgrid = model.ncgrid + 1;
 
 end

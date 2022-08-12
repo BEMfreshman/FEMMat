@@ -4,14 +4,14 @@ function [model,ierr] = spcreader(line, fid, model)
 
     ierr = 0;
 
-    if(hasstr(2)~=0)
+    if(hasstr(2)==0)
         ierr = 1;
         return;
     end
 
     sid = s2d(wline,2);
 
-    sprintf(msg,'Failed in parsing spc %d ',sid);
+    msg = sprintf('Failed in parsing spc %d ',sid);
 
     if (hasstr(3) == 0) 
         ierr = 1;
@@ -39,11 +39,11 @@ function [model,ierr] = spcreader(line, fid, model)
     ptipspc = model.ptspc(1);
     ptrpspc = model.ptspc(2);
 
-    model.ispc(:,model.ptspc) = ispc;
-    model.ipspc(ptipspc:ptipspc + 2) = ipspc;
-    model.rpspc(ptrpspc:ptrpspc + 1) = rpspc;
+    model.ispc(:,model.ncspc) = ispc;
+    model.ipspc(ptipspc:ptipspc + 2 - 1) = ipspc;
+    model.rpspc(ptrpspc:ptrpspc + 1 - 1) = rpspc;
 
-    model.ptspc = model.ptspc+1;
+    model.ncspc = model.ncspc+1;
 
     model.ptspc(1) = model.ptspc(1) + 2;
     model.ptspc(2) = model.ptspc(2) + 1;

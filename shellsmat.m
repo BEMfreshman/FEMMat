@@ -6,8 +6,8 @@ ip_ipelem = ielem(4,eiid);
 ip_rpelem = ielem(6,eiid);
 
 % iptype    = iprop(3,piid);
-ip_ipprop = iprop(4,piid);
-rp_ipprop = iprop(6,piid);
+ip_ipprop = iprop(3,piid);
+rp_ipprop = iprop(5,piid);
 
 if (ietype == 3)
     % quad4

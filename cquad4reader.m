@@ -13,7 +13,7 @@ function [model,ierr] = cquad4reader(line,fid,model)
         return;
     end
 
-    sprintf(msg,'Failed in parsing cquad %d ',eid);
+    msg = sprintf('Failed in parsing cquad %d ',eid);
 
 %    eid = s2d(wline,2);
 
@@ -55,19 +55,19 @@ function [model,ierr] = cquad4reader(line,fid,model)
     ptipelem = model.ptelem(2);
     ptrpelem = model.ptelem(3);
 
-    iele = [id,ietype,ptiegrid,ptipelem,4,ptrpelem,6]';
+    iele = [eid,ietype,ptiegrid,ptipelem,4,ptrpelem,6]';
 
-    ptelem = model.ptelem;
-    model.ielem(:,ptelem) = iele;
-    model.ptelem = model.ptelem + 1;
+    ncelem = model.ncelem;
+    model.ielem(:,ncelem) = iele;
+    model.ncelem = model.ncelem + 1;
 
-    model.iegrid(ptiegrid:ptiegrid+4) = gi;
+    model.iegrid(ptiegrid:ptiegrid+4-1) = gi;
     
     ip = [pid,mcid_flag,mcid,tflag]';
-    model.ipelem(ptipelem:ptipelem+4) = ip;
+    model.ipelem(ptipelem:ptipelem+4-1) = ip;
 
-    rp = [theta,zoffs,t]';
-    model.rpelem(ptrpelem:ptrpelem+6) = rp;
+    rp = [theta;zoffs;t];
+    model.rpelem(ptrpelem:ptrpelem+6-1) = rp;
     
     ptiegrid = ptiegrid + 4;
     ptipelem = ptipelem + 4;
