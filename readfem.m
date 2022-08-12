@@ -13,6 +13,9 @@ end
 
 % pre-allocate
 [model,ierr] = modelallocate(model);
+if (ierr ~= 0)
+    return;
+end
 
 
 % second time real read

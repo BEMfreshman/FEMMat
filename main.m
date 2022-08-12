@@ -3,6 +3,9 @@
 clear;
 clc;
 
+% model global constant
+model.neletype = 3;
+
 % model pointer
 model.ncgrid = 1;
 model.ncelem = 1;
@@ -19,6 +22,12 @@ model.rgrid  = [];   % rgrid(3,ngrid)
 
 model.idelem = [];   % (2,nelem) (1,.) - usrid
                      %           (2,.) - iid
+
+model.jelem  = zeros(3,model.neletype);  % (3,neletype)
+                                         %        (1,.) - ietype
+                                         %        (2,.) - sta pos in idelem
+                                         %        (3,.) - num of ietype
+
 model.ielem  = [];
 model.iegrid = [];   % 1-dim
 model.ipelem = [];   % 1-dim
@@ -124,8 +133,16 @@ filename = "test/48model.fem";
 if (ierr ~=0 ) 
     error('fail in read fem');
 end
+
+%% sort
+
+[model,ierr] = modelsort(model);
+if(ierr ~= 0)
+    error('fail in sort');
+end
+
 %% renum
-[~,~,ierr] = renum(model);
+[model,ierr] = renum(model);
 if (ierr ~=0)
     error('fail in renum');
 end

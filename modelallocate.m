@@ -18,9 +18,13 @@ function [model,ierr] = modelallocate(model)
     model.ipmat = zeros(model.lipmat,1);
     model.rpmat = zeros(model.lrpmat,1);
 
-    model.iforce = zeros(7,model.nforce);
+    model.iforce = zeros(6,model.nforce);
     model.ipfrc  = zeros(model.lipfrc,1);
     model.rpfrc  = zeros(model.lrpfrc,1);
+
+    model.ipres = zeros(6,model.npres);
+    model.ippres = zeros(model.lippres,1);
+    model.rppres = zeros(model.lrppres,1);
 
     model.ispc   = zeros(6,model.nspc);
     model.ipspc  = zeros(model.lipspc,1);

@@ -1,8 +1,42 @@
-function [outputArg1,outputArg2, ierr] = renum(model)
+function [model, ierr] = renum(model)
 
 % renum subroutine
 
 ierr = 0;
+
+% quick sort grid with id ascending
+
+[model,ierr] = modelsort(model);
+if (ierr ~= 0)
+    return;
+end
+
+% renum grid id in iegrid
+for i = 1:model.liegrid
+    model.iegrid(i) = find (model.igrid(1,:) == model.iegrid(i));
+end
+
+
+% renum iprop id in ielem
+for i = 1:model.nelem
+    pt = model.ielem(3,i);
+    model.ipelem(pt) = find (model.iprop(1,:) == model.ipelem(pt));
+end
+
+% renum mat id in iprop
+for i = 1:model.nprop
+    iptype = model.iprop(2,i);
+    if (iptype == 1) 
+        % PSHELL
+        pt = model.iprop(3,i);
+        for j = 1: 4
+            pos = pt + j - 1;
+            if (model.ipprop(pos) > 0)
+                model.ipprop(pos) = find(model.imat(1,:) == model.ipprop(pos));
+            end
+        end
+    end
+end
 
 end
 

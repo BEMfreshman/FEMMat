@@ -37,7 +37,7 @@ function [model,ierr] = bulkscan(fid,model)
         elseif (strncmpi(wline,'END',3)) 
             return;
         elseif (strncmpi(wline(1:4),'GRID',4))
-            model.ngrid = model.ngrid+1;
+            model.ngrid = model.ngrid + 1;
         elseif (strncmpi(wline(1:5),'FORCE',5))
             model.nforce = model.nforce + 1;
         elseif (strncmpi(wline(1:6),'PLOAD1',6) || ...
@@ -54,13 +54,13 @@ function [model,ierr] = bulkscan(fid,model)
             model.lrpspc = model.lrpspc + 1;
         elseif (strncmpi(wline(1:4),'MAT1',4))
             model.nmat = model.nmat + 1;
-            model.lrpmat = model.lrpmat + 7
+            model.lrpmat = model.lrpmat + 7;
         elseif (strncmpi(line(1:6),'PSHELL',6))
             model.nprop = model.nprop + 1;
             model.lipprop = model.lipprop + 5;
             model.lrpprop = model.lrpprop + 6;
         elseif (strncmpi(wline(1:6),'CQUAD4',6))
-            model.nelem = model.nelem;
+            model.nelem = model.nelem + 1;
 
             model.liegrid = model.liegrid + 4;
             model.lipelem = model.lipelem + 4;

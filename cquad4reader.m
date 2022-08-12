@@ -15,7 +15,7 @@ function [model,ierr] = cquad4reader(line,fid,model)
 
     msg = sprintf('Failed in parsing cquad %d ',eid);
 
-%    eid = s2d(wline,2);
+    eid = f2d(wline,hasstr,2,eid);
 
     pid = eid;
     if (hasstr(3) ~= 0)

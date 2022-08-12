@@ -14,7 +14,9 @@ function [model,ierr] = gridreader(line,fid,model)
 
     for i = 4:6
         if(hasstr(i) == 1) 
-            x(i-3) = str2double(wline((i-1)*8+1:i*8));
+            newstr = regexprep(wline((i-1)*8+1:i*8),...
+                     '([0-9.])([-+])([0-9])','$1e$2$3');
+            x(i-3) = str2double(newstr);
         end
     end
 
