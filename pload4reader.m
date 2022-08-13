@@ -54,7 +54,7 @@ function [model,ierr] = pload4reader(line,fid,model)
 
     [wline,hasstr] = preprocesstext(line,56);
 
-    if (all(hasstr(3:5)) == 0) 
+    if (~all(hasstr(3:5))) 
         ierr = 0;
         disp([msg,', there is one blank at least in N1 N2 N3']);
         return;

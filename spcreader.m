@@ -10,6 +10,7 @@ function [model,ierr] = spcreader(line, fid, model)
     end
 
     sid = s2d(wline,2);
+    ispctype = 1;
 
     msg = sprintf('Failed in parsing spc %d ',sid);
 
@@ -39,7 +40,7 @@ function [model,ierr] = spcreader(line, fid, model)
     ptipspc = model.ptspc(1);
     ptrpspc = model.ptspc(2);
 
-    model.ispc(:,model.ncspc) = ispc;
+    model.ispc(:,model.ncspc) = [ispc,ispctype,ptipspc,2,ptrpspc,1]';
     model.ipspc(ptipspc:ptipspc + 2 - 1) = ipspc;
     model.rpspc(ptrpspc:ptrpspc + 1 - 1) = rpspc;
 

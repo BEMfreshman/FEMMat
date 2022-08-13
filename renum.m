@@ -16,6 +16,12 @@ for i = 1:model.liegrid
     model.iegrid(i) = find (model.igrid(1,:) == model.iegrid(i));
 end
 
+% renum grid id in spc
+igs = model.ipspc(model.ispc(3,:));
+for i = 1:length(igs)
+    model.ipspc(3,i) = find (igs(i) == model.iegrid(i));
+end
+
 
 % renum iprop id in ielem
 for i = 1:model.nelem

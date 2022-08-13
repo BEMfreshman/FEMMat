@@ -66,29 +66,39 @@ model.lrpfrc = 0;
 
 model.ptpres = zeros(2,1) + 1;  % pt to ippres, to rppres
 
+model.jpres = []; % (3,npres0)
+                  %       (1,.) - id
+                  %       (2,.) - sta pos of col in ipres
+                  %       (3,.) - num
+
 model.ipres  = [];   % ipres(7,npres)
 model.ippres = [];
 model.rppres = [];
 
-model.lippres = 0;
-model.lrppres = 0;
-
-model.wipres  = [];
-model.wippres = [];
-model.wrppres = [];
+% model.lippres = 0;
+% model.lrppres = 0;
+% 
+% model.wipres  = [];  % those 3 array would be allocated in prep subroutine
+% model.wippres = [];
+% model.wrppres = [];
 
 model.ptspc = zeros(2,1) + 1;  % pt to ipspc, to rpspc
+
+model.jspc = [];  % (3,nspc0)
+                  %        (1,.) - id
+                  %        (2,.) - sta pos of col in ispc
+                  %        (3,.) - num
 
 model.ispc   = [];
 model.ipspc  = [];
 model.rpspc  = [];
 
-model.lipspc = 0;
-model.lrpspc = 0;
+% model.lipspc = 0;
+% model.lrpspc = 0;
 
-model.wispc  = [];
-model.wipspc = [];
-model.wrpspc = [];
+% model.wispc  = []; % those 3 array would be allocated in prep subroutine
+% model.wipspc = [];
+% model.wrpspc = [];
 
 model.inlprm  = [];
 model.ipnlprm = [];
@@ -148,7 +158,7 @@ if (ierr ~=0)
 end
 
 %% prep
-[ierr] = prep(model);
+[model,ierr] = prep(model);
 if (ierr ~= 0)
     error('fail in prep');
 end
