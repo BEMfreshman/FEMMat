@@ -6,6 +6,7 @@ ipres(6,npres)
     (5,.) - pointer to rppres
     (6,.) - nrppres
 
+
 iprestype:
     1 - pload1
     2 - pload2
@@ -14,14 +15,18 @@ iprestype:
 
 ippres(*)
     PLOAD4:
-    
     (1) - eid
     (2) - g1
     (3) - g34
     (4) - cid
-rppres(*)
-    PLOAD4:
 
+
+rppres(*)
+
+    PLOAD2:
+    (1) - pres
+
+    PLOAD4:
     (1) - p1
     (2) - p2
     (3) - p3

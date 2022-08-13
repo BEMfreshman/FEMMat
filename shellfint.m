@@ -1,15 +1,15 @@
-function [fe,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres)
-% this function is used to build fe
-% cord system has not been considered 2022-8-8
+function [fe,ierr] = shellfint(strtype,eid,ielem,iegrid,rgrid,cid,p,n)
+
+% cid and n are not used in this subroutine 8-13
 
 ietype    = ielem(2,eid);
 ip_iegrid = ielem(3,eid);
 
-if (ietype  == 2) 
+if(ietype == 2)
     % cquad4
     ngrid = 4;
 else
-    ierr  = 1;
+    ierr = 1;
     return;
 end
 
@@ -38,7 +38,7 @@ for i = 1:order
 end
 
 [nfun,dndl] = quad4nfun(strtype,xc);
-% nfun (4,n)
+% nfun(4,n)
 
 [~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
 
@@ -48,20 +48,20 @@ elcoord = lcoords(1:2,:);  % elcoord in ele coordinate
 fe = zeros(24,1);
 
 fs = zeros(4,1);   % z axis of 4 point
-for i = 1:inc
 
+for i = 1:nc
+    
     dndli = dndl(:,2*i-1:2*i)';
-%    xct   = xc';
-
-    j = dndli * elcoord'; % [2 * 4] * [4 * 2]
+    
+    j = dndli * elcoord';
     detj = det(j);
+
+    pres = p' * nfun(:,i);
 
     fs = fs + nfun * pres * wc(i) * detj;
 end
 
 ldofloc = [3,9,15,21];
-
 fe(ldofloc) = fs;
-
 
 end

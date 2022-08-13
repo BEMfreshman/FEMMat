@@ -1,6 +1,6 @@
 function [fel,ldofloc,ierr] = quad4f(eid,ielem,iegrid,rgrid,ipelem,rpelem,...
                                     ipprop,rpprop,ipmat,rpmat,presid,...
-                                    wipres,wippres,wrppres)
+                                    ipres,ippres,rppres)
    
 ierr = 0;
 
@@ -44,16 +44,15 @@ elseif (imat1 ~=0 && imat2 ~=0 && imat3 ==0 && imat4 == 0)
     
 end
 
-% build shell coordinate system, however this trnsm is used to 
-% trans coord in element cord system to basic system
-[~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
+% % build shell coordinate system, however this trnsm is used to 
+% % trans coord in element cord system to basic system
+% [~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
+% 
+% lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
 
-lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
-
-
-iprestype = wipres(2,presid);
-ip_ippres = wipres(3,presid);
-ip_rppres = wipres(5,presid);
+iprestype = ipres(2,presid);
+ip_ippres = ipres(3,presid);
+ip_rppres = ipres(5,presid);
 
 if (iprestype == 1 )
     % PLOAD1
@@ -62,13 +61,23 @@ if (iprestype == 1 )
 elseif (iprestype == 2) 
     % PLOAD2
     % to do 
-    pres = wrppres(ip_rppres);
-    [fel,ldofloc,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres);
+    pres = rppres(ip_rppres);
+    [fel,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres);
+    if (ierr ~= 0)
+        return;
+    end
     
 elseif (iprestype == 3)
     % PLOAD4
-    ierr = 1;
-    return;
+    cid = ippres(ip_ippres + 3);
+
+    p = rppres(ip_ippres:ip_ippres+3);
+    n = rppres(ip_ippres+4:ip_ipres+6);
+
+    [fel,ierr] = shellfint(strtype,eid,ielem,iegrid,rgrid,cid,p,n);
+    if (ierr ~= 0)
+        return;
+    end
 end
 
 
