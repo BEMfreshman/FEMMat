@@ -1,13 +1,13 @@
-function [D, ierr] = shellsmat(strtype,eiid,ielem,ipelem,rpelem,piid,...
+function [D, ierr] = shellsmat(strtype,eid,ietype,ielem,ipelem,rpelem,pid,...
                                 iprop,ipprop,rpprop,imat,ipmat,rpmat)
 %SHELLSMAT is used to calculate material matrix D
 
-ip_ipelem = ielem(4,eiid);
-ip_rpelem = ielem(6,eiid);
+ip_ipelem = ielem(4,eid);
+ip_rpelem = ielem(6,eid);
 
 % iptype    = iprop(3,piid);
-ip_ipprop = iprop(3,piid);
-rp_ipprop = iprop(5,piid);
+ip_ipprop = iprop(3,pid);
+rp_ipprop = iprop(5,pid);
 
 if (ietype == 3)
     % quad4
@@ -28,10 +28,17 @@ if (ietype == 3)
     tinpshell = rpprop(rp_ipprop);
 
     if (hast ~= 0) 
-        t1 = t1 * tinpshell;
-        t2 = t2 * tinpshell;
-        t3 = t3 * tinpshell;
-        t4 = t4 * tinpshell;
+        if (tflag ~= 0)
+            t1 = t1 * tinpshell;
+            t2 = t2 * tinpshell;
+            t3 = t3 * tinpshell;
+            t4 = t4 * tinpshell;
+        else
+            t1 = tinpshell;
+            t2 = tinpshell;
+            t3 = tinpshell;
+            t4 = tinpshell;
+        end
     end
 
     athick = t1 + t2 + t3 + t4;
@@ -41,13 +48,13 @@ elseif (ietype == 2)
     
 end
 
-imat1 = ipprop(ip_ipprop);
+idmat1 = ipprop(ip_ipprop);
 
-imattype = imat(2,imat1);
+imattype = imat(2,idmat1);
 
-E   = rpmat(imat1);
-G   = rpmat(imat1 + 1);
-Nu  = rpmat(imat1 + 2);
+E   = rpmat(idmat1);
+G   = rpmat(idmat1 + 1);
+Nu  = rpmat(idmat1 + 2);
 % RHO = rpmat(imat1 + 3);
 
 ierr = 0;

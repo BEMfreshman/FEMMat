@@ -1,33 +1,33 @@
 function [spaf,ierr] = assemblepres(loadiid,loaduid,ielem,iegrid,rgrid,ipelem, ...
-                                    rpelem,ipprop,rpprop,ipmat,rpmat,npres0,...
-                                    wipres,wippres,wrppres,spaf)
+                                    rpelem,iprop,ipprop,rpprop,ipmat,rpmat,npres,...
+                                    ipres,ippres,rppres,spaf)
 
 % assemble pressure to f load
 ierr = 0;
-if (npres0 == 0) 
+if (npres == 0) 
     return; 
 end
 
-if (loadiid > npres0)
+if (loadiid > npres)
     return;
 end
 
-uid       = ipres(1,loadiid);
-if (uid ~= loaduid)
+iid       = ipres(1,loadiid);
+if (iid ~= loaduid)
     return;
 end
-ip_ippres = wipres(3,loadiid);
-ni        = wipres(4,loadiid);
+ip_ippres = ipres(3,loadiid);
+ni        = ipres(4,loadiid);
 
 for j = 1:ni
-    eid    = wippres(ip_ippres+j-1);
+    eid    = ippres(ip_ippres+j-1);
     ietype = ielem(2,eid);
 
     if (ietype == 3)
         % CQUAD4
         [fel,dofloc,ierr] = quad4f(eid,ielem,iegrid,rgrid,ipelem,rpelem,...
-                                ipprop,rpprop,ipmat,rpmat,presid,...
-                                wipres,wippres,wrppres);
+                                iprop,ipprop,rpprop,ipmat,rpmat,iid,...
+                                ipres,ippres,rppres);
     else
         ierr = 1;
         return;

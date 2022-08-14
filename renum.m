@@ -19,7 +19,7 @@ end
 % renum grid id in spc
 igs = model.ipspc(model.ispc(3,:));
 for i = 1:length(igs)
-    model.ipspc(3,i) = find (igs(i) == model.iegrid(i));
+    model.ipspc(3,i) = find (igs(i) == model.igrid(1,:));
 end
 
 

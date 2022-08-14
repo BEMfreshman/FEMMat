@@ -37,8 +37,11 @@ for i = 1:order
     end
 end
 
-[nfun,dndl] = quad4nfun(strtype,xc);
+[nfun,dndl,ierr] = quad4nfun(strtype,xc);
 % nfun (4,n)
+if (ierr ~= 0)
+    return;
+end
 
 [~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
 

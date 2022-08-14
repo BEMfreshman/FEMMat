@@ -25,16 +25,16 @@ ltobtrnsm(:,4) = coords(:,1);
 
 
 vecx = coords(:,2) - coords(:,1);
-vecx = normalize(vecx);
+vecx = vecx / norm(vecx);
 
 fakey = coords(:,3) - coords(:,1);
-fakey = normalize(fakey);
+fakey = fakey / norm(fakey);
 
 vecz = cross(vecx,fakey);
-vecz = normalize(vecz);
+vecz = vecz / norm(vecz);
 
 vecy = cross(vecx,vecz);
-vecy = normalize(vecy);
+vecy = vecy / norm(vecy);
 
 ltobtrnsm(:,1) = vecx;
 ltobtrnsm(:,2) = vecy;

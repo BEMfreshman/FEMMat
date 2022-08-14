@@ -1,5 +1,5 @@
 function [model,ierr] = prepploadx(model)
-    ierr = 1;
+    ierr = 0;
 
     uidx = unique(model.ipres(1,:));
 

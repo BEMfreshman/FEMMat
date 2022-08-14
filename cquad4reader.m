@@ -37,8 +37,9 @@ function [model,ierr] = cquad4reader(line,fid,model)
     mcid  = 0;
     mcid_flag =0;
     theta = 0.0;
-    num8 = s2d(wline,8);
-    if (int32(num8) == num8)
+    num8 = 0;
+    num8 = f2d(wline,hasstr,8,num8);
+    if (int32(num8) == num8 && num8 ~= 0)
         % integer
         mcid = num8;
         mcid_flag = 1;

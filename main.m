@@ -75,8 +75,8 @@ model.ipres  = [];   % ipres(7,npres)
 model.ippres = [];
 model.rppres = [];
 
-% model.lippres = 0;
-% model.lrppres = 0;
+model.lippres = 0;
+model.lrppres = 0;
 % 
 % model.wipres  = [];  % those 3 array would be allocated in prep subroutine
 % model.wippres = [];
@@ -93,8 +93,8 @@ model.ispc   = [];
 model.ipspc  = [];
 model.rpspc  = [];
 
-% model.lipspc = 0;
-% model.lrpspc = 0;
+model.lipspc = 0;
+model.lrpspc = 0;
 
 % model.wispc  = []; % those 3 array would be allocated in prep subroutine
 % model.wipspc = [];
@@ -136,6 +136,19 @@ model.nspc0 = 0;
 nstt   = model.nstsub;   % number of static analysis (include linear and nonlinear)
 nnlstt = model.nnlstt;   % number of nonlinear static analysis
 
+% hard code
+nstt = 1;
+nnlstt = 0;
+
+model.nstsub = 1;
+model.istsub = zeros(5,nstt);
+model.istsub(1,1) = 1;
+model.istsub(2,1) = 1;
+model.istsub(3,1) = 1;
+model.istsub(4,1) = 1;
+model.istsub(5,1) = 1;
+
+
 %% pre-process
 filename = "test/48model.fem";
 
@@ -167,7 +180,7 @@ end
 
 if (nstt - nnlstt ~= 0)
    % linear static 
-   [~,~,ierr] = lstat_main(model);
+   [~,ierr] = lstat_main(model);
 else
    % non-linear static
     

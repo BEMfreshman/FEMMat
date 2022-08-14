@@ -1,14 +1,14 @@
 function [fel,ldofloc,ierr] = quad4f(eid,ielem,iegrid,rgrid,ipelem,rpelem,...
-                                    ipprop,rpprop,ipmat,rpmat,presid,...
+                                    iprop,ipprop,rpprop,ipmat,rpmat,presid,...
                                     ipres,ippres,rppres)
    
 ierr = 0;
 
 coords = zeros(3,4);
 
-ip_iegrid = ielem(3,eiid);
-ip_ipdata = ielem(4,eiid);
-ip_rpdata = ielem(6,eiid);
+ip_iegrid = ielem(3,eid);
+ip_ipdata = ielem(4,eid);
+ip_rpdata = ielem(6,eid);
 
 idprop = ipelem(ip_ipdata);
 ip_ipprop = iprop(3,idprop);
@@ -25,21 +25,21 @@ end
 imcid  = ipelem(ip_ipdata + 1); 
 
 % only mid1 would be considered now  8-6
-imat1 = ipprop(ip_ipprop);
-imat2 = ipprop(ip_ipprop+1);
-imat3 = ipprop(ip_ipprop+2);
-imat4 = ipprop(ip_ipprop+3);
+idmat1 = ipprop(ip_ipprop);
+idmat2 = ipprop(ip_ipprop+1);
+idmat3 = ipprop(ip_ipprop+2);
+idmat4 = ipprop(ip_ipprop+3);
 
-if (imat1 ~=0 && (imat2 == 0 || imat2 == -1) && imat3 == 0 && imat4 == 0)
+if (idmat1 ~=0 && (idmat2 == 0 || idmat2 == -1) && idmat3 == 0 && idmat4 == 0)
     % PLANE STRESS OR PLANE STRAIN
     
-    if (imat2 == -1) 
+    if (idmat2 == -1) 
         strtype = 'PLANESTRAIN';
     else
         strtype = 'PLANESTRESS';
     end
     
-elseif (imat1 ~=0 && imat2 ~=0 && imat3 ==0 && imat4 == 0)
+elseif (idmat1 ~=0 && idmat2 ~=0 && idmat3 ==0 && idmat4 == 0)
     % THINPLATE or MINDLINPLATE
     
 end

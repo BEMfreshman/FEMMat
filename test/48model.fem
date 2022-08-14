@@ -169,7 +169,7 @@ $$  PSHELL Data
 $$
 $HMNAME PROP                   1"PSHELL1" 4
 $HWCOLOR PROP                  1       8
-PSHELL         1       12.0            1                        0.0     
+PSHELL         1       11.0                                     0.0     
 $$
 $$  MAT1 Data
 $$

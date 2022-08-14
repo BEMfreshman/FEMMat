@@ -23,10 +23,10 @@ function [model,ierr] = mat1reader(line,fid,model)
     GE = 0;
 
     E = f2d(wline,hasstr,3,E);
-    G = f2d(wline,hasstr,3,G);
-    Nu = f2d(wline,hasstr,3,Nu);
-    RHO = f2d(wline,hasstr,3,RHO);
-    A = f2d(wline,hasstr,3,A);
+    G = f2d(wline,hasstr,4,G);
+    Nu = f2d(wline,hasstr,5,Nu);
+    RHO = f2d(wline,hasstr,6,RHO);
+    A = f2d(wline,hasstr,7,A);
 
     imat = [mid,imattype,model.ptmat(1),0,model.ptmat(2),7];
     model.imat(:,model.ncmat) = imat;

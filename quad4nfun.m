@@ -23,9 +23,9 @@ if (strcmp(strtype,'PLANESTRESS') || strcmp(strtype,'PLANESTRAIN'))
     for i = 1:n
         xi = x(:,i);
         nfun(1,i) = 0.25 * (1 - xi(1)) * (1 - xi(2));
-        nfun(2,i) = 0.25 * (1 + xi(i)) * (1 - xi(2));
-        nfun(3,i) = 0.25 * (1 + xi(i)) * (1 + xi(2));
-        nfun(4,i) = 0.25 * (1 - xi(i)) * (1 + xi(2));
+        nfun(2,i) = 0.25 * (1 + xi(1)) * (1 - xi(2));
+        nfun(3,i) = 0.25 * (1 + xi(1)) * (1 + xi(2));
+        nfun(4,i) = 0.25 * (1 - xi(1)) * (1 + xi(2));
 
         dndl(1,2*i-1) = -0.25 * (1-xi(2));
         dndl(2,2*i-1) =  0.25 * (1-xi(2));
