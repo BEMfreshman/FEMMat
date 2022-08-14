@@ -1,4 +1,4 @@
-function [fe,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres)
+function [fe,dofloc,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres)
 % this function is used to build fe
 % cord system has not been considered 2022-8-8
 
@@ -69,8 +69,8 @@ for i = 1:inc
 end
 
 ldofloc = [3,9,15,21];
-
 fe(ldofloc) = fs;
 
+dofloc = gidtodofid(gi);
 
 end

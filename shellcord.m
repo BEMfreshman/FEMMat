@@ -3,7 +3,7 @@ function [ltobtrnsm,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid)
 % ltobtrnsm (1:3,1:3) - rotational transformation mtx
 % ltobtrnsm (1:3,4)   - orginal point
 
-% {x}b = {x}0 + [ltobtrnsm]{x}l   ==> global  =  origin + trnsm * local
+% {x}b = {x}0 + [ltobtrnsm]{x}l   ==> basic  =  origin + trnsm * local
 % ltobtrnsm * ltobtrnsm' = ltobtrnsm' * ltobtrnsm = I;
 
 ip_iegrid = ielem(3,eid);

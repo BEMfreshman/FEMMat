@@ -17,9 +17,16 @@ for i = 1:model.liegrid
 end
 
 % renum grid id in spc
+
 igs = model.ipspc(model.ispc(3,:));
+igs = reshape([igs,igs+2]',[],1);
 for i = 1:length(igs)
-    model.ipspc(3,i) = find (igs(i) == model.igrid(1,:));
+    gid = model.ipspc(igs(i));
+    if (gid == 0)
+        continue;
+    end
+    iid = find(gid == model.igrid(1,:));
+    model.ipspc(igs(i)) = iid;
 end
 
 

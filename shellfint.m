@@ -1,4 +1,4 @@
-function [fe,ierr] = shellfint(strtype,eid,ielem,iegrid,rgrid,cid,p,n)
+function [fe,dofloc,ierr] = shellfint(strtype,eid,ielem,iegrid,rgrid,cid,p,n)
 
 % cid and n are not used in this subroutine 8-13
 
@@ -58,7 +58,7 @@ fe = zeros(24,1);
 
 fs = zeros(4,1);   % z axis of 4 point
 
-for i = 1:nc
+for i = 1:ngint
     
     dndli = dndl(:,2*i-1:2*i)';
     
@@ -67,10 +67,13 @@ for i = 1:nc
 
     pres = p' * nfun(:,i);
 
-    fs = fs + nfun * pres * wc(i) * detj;
+    fs = fs + nfun(:,i) * pres * wc(i) * detj;
 end
 
 ldofloc = [3,9,15,21];
 fe(ldofloc) = fs;
+
+dofloc = gidtodofid(gi);
+
 
 end

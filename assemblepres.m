@@ -16,11 +16,13 @@ iid       = ipres(1,loadiid);
 if (iid ~= loaduid)
     return;
 end
+
+iprestype = ipres(2,loadiid);
 ip_ippres = ipres(3,loadiid);
 ni        = ipres(4,loadiid);
 
-for j = 1:ni
-    eid    = ippres(ip_ippres+j-1);
+if (iprestype == 3)
+    eid    = ippres(ip_ippres);
     ietype = ielem(2,eid);
 
     if (ietype == 3)
@@ -42,7 +44,9 @@ for j = 1:ni
     feb = ltob24 * fel;
 
     spaf(dofloc) = spaf(dofloc) + feb;
-
+else
+    ierr = 1;
+    return;
 end
 
     

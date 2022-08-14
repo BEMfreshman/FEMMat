@@ -76,9 +76,6 @@ for i = 1:ngint
     
 end
 
-% ks is ready
-% calculate dof id
-
 [dofloc] = gidtodofid(gi);
 
 ke = zeros(24,24);

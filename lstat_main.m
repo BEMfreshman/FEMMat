@@ -81,12 +81,15 @@ for iload = 1:nstsub
 
 
     % spc
-    [spak,spaf,gdofloc,ierr] = applyspc(spciid,model.wispc,model.wipspc,...
-                                modle.wrpspc,spak,spaf,gdofloc);
+    [spak,spaf,gdofloc,ierr] = applyspc(spciid,model.ispc,model.ipspc,...
+                                model.rpspc,model.nspc,model.jspc,...
+                                model.nspc0,spak,spaf,gdofloc);
     if (ierr ~= 0) 
         return;
     end
     % solve
+    
+    [disp] = lsqr(spak,spaf);
     
 end
 

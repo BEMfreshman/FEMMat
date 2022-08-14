@@ -50,8 +50,8 @@ function [model,ierr] = bulkscan(fid,model)
             end
         elseif (strncmpi(wline(1:3),'SPC',3)) 
             model.nspc = model.nspc + 1;
-            model.lipspc = model.lipspc + 2;
-            model.lrpspc = model.lrpspc + 1;
+            model.lipspc = model.lipspc + 4;
+            model.lrpspc = model.lrpspc + 2;
         elseif (strncmpi(wline(1:4),'MAT1',4))
             model.nmat = model.nmat + 1;
             model.lrpmat = model.lrpmat + 7;

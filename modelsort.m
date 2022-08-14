@@ -55,6 +55,10 @@ function [model,ierr] = modelsort(model)
     %% sort pres
     [~,inx] = sort(model.ipres(1,:));
     model.ipres = model.ipres(:,inx);
+    
+    %% sort spc
+    [~,inx] = sort(model.ispc(1,:));
+    model.ispc = model.ispc(:,inx);
 
 
 end

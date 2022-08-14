@@ -34,19 +34,19 @@ function [model,ierr] = spcreader(line, fid, model)
     end
 
     ispc = sid;
-    ipspc = [g1,c1]';
-    rpspc = d1;
+    ipspc = [g1,c1,0,0]';
+    rpspc = [d1,0];
 
     ptipspc = model.ptspc(1);
     ptrpspc = model.ptspc(2);
 
-    model.ispc(:,model.ncspc) = [ispc,ispctype,ptipspc,2,ptrpspc,1]';
-    model.ipspc(ptipspc:ptipspc + 2 - 1) = ipspc;
-    model.rpspc(ptrpspc:ptrpspc + 1 - 1) = rpspc;
+    model.ispc(:,model.ncspc) = [ispc,ispctype,ptipspc,4,ptrpspc,2]';
+    model.ipspc(ptipspc:ptipspc + 4 - 1) = ipspc;
+    model.rpspc(ptrpspc:ptrpspc + 2 - 1) = rpspc;
 
     model.ncspc = model.ncspc+1;
 
-    model.ptspc(1) = model.ptspc(1) + 2;
-    model.ptspc(2) = model.ptspc(2) + 1;
+    model.ptspc(1) = model.ptspc(1) + 4;
+    model.ptspc(2) = model.ptspc(2) + 2;
 
 end

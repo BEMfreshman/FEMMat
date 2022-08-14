@@ -18,6 +18,8 @@ function [model,ierr] = prepspc(model)
         jspc(2,i) = pos;
         jspc(3,i) = sum(uidx(i) == model.ispc(1,:));
     end
+    
+    model.jspc = jspc;
 
 %     ptwipspc = 1;
 %     ptwrpspc = 1;

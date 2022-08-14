@@ -1,4 +1,4 @@
-function [fel,ldofloc,ierr] = quad4f(eid,ielem,iegrid,rgrid,ipelem,rpelem,...
+function [fel,dofloc,ierr] = quad4f(eid,ielem,iegrid,rgrid,ipelem,rpelem,...
                                     iprop,ipprop,rpprop,ipmat,rpmat,presid,...
                                     ipres,ippres,rppres)
    
@@ -62,7 +62,7 @@ elseif (iprestype == 2)
     % PLOAD2
     % to do 
     pres = rppres(ip_rppres);
-    [fel,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres);
+    [fel,dofloc,ierr] = shellf(strtype,eid,ielem,iegrid,rgrid,pres);
     if (ierr ~= 0)
         return;
     end
@@ -74,7 +74,7 @@ elseif (iprestype == 3)
     p = rppres(ip_ippres:ip_ippres+3);
     n = rppres(ip_ippres+4:ip_ippres+6);
 
-    [fel,ierr] = shellfint(strtype,eid,ielem,iegrid,rgrid,cid,p,n);
+    [fel,dofloc,ierr] = shellfint(strtype,eid,ielem,iegrid,rgrid,cid,p,n);
     if (ierr ~= 0)
         return;
     end
