@@ -5,9 +5,15 @@ function [fe,ierr] = shellfint(strtype,eid,ielem,iegrid,rgrid,cid,p,n)
 ietype    = ielem(2,eid);
 ip_iegrid = ielem(3,eid);
 
-if(ietype == 2)
+if(ietype == 3)
     % cquad4
-    ngrid = 4;
+    gi = zeros(4,1);
+    coords = zeros(3,4);
+
+    for i = 1: 4
+        gi(i) = iegrid(ip_iegrid + i - 1);
+        coords(:,i) = rgrid(:,gi(i));
+    end
 else
     ierr = 1;
     return;

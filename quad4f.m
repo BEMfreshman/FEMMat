@@ -72,7 +72,7 @@ elseif (iprestype == 3)
     cid = ippres(ip_ippres + 3);
 
     p = rppres(ip_ippres:ip_ippres+3);
-    n = rppres(ip_ippres+4:ip_ipres+6);
+    n = rppres(ip_ippres+4:ip_ippres+6);
 
     [fel,ierr] = shellfint(strtype,eid,ielem,iegrid,rgrid,cid,p,n);
     if (ierr ~= 0)
