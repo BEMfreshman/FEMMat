@@ -6,7 +6,9 @@ function [spak,ierr] = assemblek(kel,dofloc,ltobtrnsm,spak)
     ierr = 0;
     
     ltobtrnmtx = ltobtrnsm(1:3,1:3);
-    ltob6 = repmat(ltobtrnmtx,2,2);
+    ltob6 = zeros(6,6);
+    ltob6(1:3,1:3) = ltobtrnmtx;
+    ltob6(4:6,4:6) = ltobtrnmtx;
     
     % ltob24 = repmat(ltobtrnmtx,8,8);
 
@@ -33,14 +35,14 @@ function [spak,ierr] = assemblek(kel,dofloc,ltobtrnsm,spak)
     
     
 
-    x1 = reshape(repmat(dofloc,1,24),[],1);
-    x2 = repmat(dofloc,24,1);
+    % x1 = reshape(repmat(dofloc,1,ngrid*6),[],1);
+    % x2 = reshape(repmat(dofloc',ngrid*6,1),[],1);
     
     % x = [x1,x2];
     
-    data = reshape(keb,[],1);
+    % data = reshape(keb,[],1);
     
-    spak(x1,x2) = spak(x1,x2) + data;
+    spak(dofloc,dofloc) = spak(dofloc,dofloc) + keb;
 
 end
 

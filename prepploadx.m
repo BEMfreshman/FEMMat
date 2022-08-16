@@ -35,6 +35,8 @@ function [model,ierr] = prepploadx(model)
         jpres(1,i) = uidx(i);
         jpres(2,i) = pos;
         jpres(3,i) = sum(uidx(i) == model.ipres(1,:));
+
+        pos = pos + jpres(3,i);
     end
 
 %     ptwippres = 1;

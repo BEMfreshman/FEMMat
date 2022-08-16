@@ -77,7 +77,7 @@ function [model,ierr] = pload4reader(line,fid,model)
     ip = [sid,iprestype,ptippres,4,ptrppres,9]';
 
     ippres = [eid,g1,g34,cid]';   % 4
-    rppres = [p',n',sorl,ldir];   % 9
+    rppres = [p',n',sorl,ldir]';   % 9
 
     model.ipres(:,model.ncpres) = ip;
     model.ncpres = model.ncpres + 1;

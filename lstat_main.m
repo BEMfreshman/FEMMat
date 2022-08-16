@@ -10,7 +10,7 @@ nelem = model.nelem;
 ielem = model.ielem;
 
 ngrid   = model.ngrid;
-nforce = model.nforce;
+nfrc = model.nfrc;
 npres  = model.npres;
 nspc    = model.nspc;
 
@@ -62,8 +62,9 @@ for iload = 1:nstsub
     % build f vector
     
     % 1. deal with force cards
-    if (nforce ~= 0)
-        
+    if (nfrc ~= 0)
+        [spaf,ierr] = assemblefrc(loadiid,loaduid,model.ifrc,model.ipfrc,model.rpfrc,...
+                            model.jfrc,model.nfrc,model.nfrc0,spaf);
         
     end
     
@@ -89,7 +90,13 @@ for iload = 1:nstsub
     end
     % solve
     
-    [disp] = lsqr(spak,spaf);
+    [disp0] = lsqr(spak,spaf,1e-6,500);
+    
+    
+    disp = zeros(ngrid*6,1);
+    disp(gdofloc) = disp0;
+    
+    disp = reshape(disp,6,[])';
     
 end
 

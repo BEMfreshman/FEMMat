@@ -8,10 +8,10 @@ function [model,ierr] = prep(model)
         return;
     end
 
-%     [model,ierr] = prepforce(model);
-%     if (ierr ~= 0)
-%         return;
-%     end
+    [model,ierr] = prepforce(model);
+    if (ierr ~= 0)
+        return;
+    end
 
     [model,ierr] = prepploadx(model);
     if (ierr ~= 0)

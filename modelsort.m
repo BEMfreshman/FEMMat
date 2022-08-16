@@ -51,6 +51,10 @@ function [model,ierr] = modelsort(model)
     %% sort mat
     [~,inx] = sort(model.imat(1,:));
     model.imat = model.imat(:,inx);
+    
+    %% sort frc
+    [~,inx] = sort(model.ifrc(1,:));
+    model.ifrc = model.ifrc(:,inx);
 
     %% sort pres
     [~,inx] = sort(model.ipres(1,:));

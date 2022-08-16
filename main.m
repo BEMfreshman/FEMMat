@@ -11,10 +11,9 @@ model.ncgrid = 1;
 model.ncelem = 1;
 model.ncprop = 1;
 model.ncmat = 1;
-model.ncforce = 1;
+model.ncfrc = 1;
 model.ncpres = 1;
 model.ncspc = 1;
-
 
 model.igrid  = [];   % igrid(5,ngrid)
 model.rgrid  = [];   % rgrid(3,ngrid)
@@ -57,7 +56,14 @@ model.rpmat = [];
 model.lipmat = 0;
 model.lrpmat = 0;
 
-model.iforce = [];   % iforce(7,nfrc)
+model.ptfrc = zeros(2,1) + 1;
+
+model.jfrc = [];    % (3,nfrc0)
+                    %       (1,.) - id
+                    %       (2,.) - sta pos of col in ipfrc
+                    %       (3,.) - num
+
+model.ifrc = [];   % iforce(7,nfrc)
 model.ipfrc  = [];
 model.rpfrc  = [];
 
@@ -123,8 +129,8 @@ model.nelem = 0;
 model.nmat  = 0;
 model.nprop = 0;
 
-model.nforce  = 0;
-model.nforce0 = 0;
+model.nfrc  = 0;
+model.nfrc0 = 0;
 
 model.npres  = 0;
 model.npres0 = 0;
@@ -150,7 +156,8 @@ model.istsub(5,1) = 1;
 
 
 %% pre-process
-filename = "test/48model.fem";
+%filename = "test/48model.fem";
+filename = 'test/50elem_plane.bdf';
 
 [model,ierr] = readfem(filename,model);
 if (ierr ~=0 ) 
@@ -180,7 +187,7 @@ end
 
 if (nstt - nnlstt ~= 0)
    % linear static 
-   [~,ierr] = lstat_main(model);
+   [disp,ierr] = lstat_main(model);
 else
    % non-linear static
     
@@ -189,6 +196,11 @@ end
 if (ierr ~= 0)
     error('fail in solver')
 end
+
+
+%% visualization
+
+% plot x
 
 
 

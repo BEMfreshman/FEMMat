@@ -17,6 +17,8 @@ function [model,ierr] = prepspc(model)
         jspc(1,i) = uidx(i);
         jspc(2,i) = pos;
         jspc(3,i) = sum(uidx(i) == model.ispc(1,:));
+
+        pos = jspc(3,i);
     end
     
     model.jspc = jspc;

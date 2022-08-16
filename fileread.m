@@ -55,6 +55,10 @@ function [model,ierr] = bulkread(fid,model)
         elseif (strncmpi(line(1:6),'PLOAD4',6))
             [model,ierr] = pload4reader(wline,fid,model);
             
+            % FORCE
+        elseif (strncmpi(line(1:5),'FORCE',5))
+            [model,ierr] = forcereader(wline,fid,model);
+            
             % SPC
         elseif (strncmpi(line(1:3),'SPC',3))
             [model,ierr] = spcreader(wline,fid,model);

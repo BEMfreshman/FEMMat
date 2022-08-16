@@ -33,7 +33,7 @@ fakey = fakey / norm(fakey);
 vecz = cross(vecx,fakey);
 vecz = vecz / norm(vecz);
 
-vecy = cross(vecx,vecz);
+vecy = cross(vecz,vecx);
 vecy = vecy / norm(vecy);
 
 ltobtrnsm(:,1) = vecx;

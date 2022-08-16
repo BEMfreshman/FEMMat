@@ -1,0 +1,24 @@
+ifrc(6,nfrc)
+    (1,.) - usrid
+    (2,.) - iforcetype
+    (3,.) - pointer to ipfrc
+    (4,.) - nipfrc
+    (5,.) - pointer to rpfrc
+    (6,.) - nrpfrc
+
+
+iforcetype:
+    1 - force
+
+ipfrc(*)
+    FORCE:
+    (1) - g
+    (2) - cid
+
+
+rpfrc(*):
+    FORCE:
+    (1) - f
+    (2) - n1
+    (3) - n2
+    (4) - n3

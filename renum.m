@@ -18,7 +18,7 @@ end
 
 % renum grid id in spc
 
-igs = model.ipspc(model.ispc(3,:));
+igs = model.ispc(3,:)';
 igs = reshape([igs,igs+2]',[],1);
 for i = 1:length(igs)
     gid = model.ipspc(igs(i));
@@ -29,6 +29,17 @@ for i = 1:length(igs)
     model.ipspc(igs(i)) = iid;
 end
 
+% renum grid in force
+igs = model.ifrc(3,:)';
+
+for i = 1:length(igs)
+    gid = model.ipfrc(igs(i));
+    if (gid == 0)
+        continue;
+    end
+    iid = find(gid == model.igrid(1,:));
+    model.ipfrc(igs(i)) = iid;
+end
 
 % renum iprop id in ielem
 for i = 1:model.nelem
