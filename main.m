@@ -202,12 +202,55 @@ end
 
 % plot x
 
+xmax = max(model.rgrid(1,:));
+xmin = min(model.rgrid(1,:));
 
+ymax = max(model.rgrid(2,:));
+ymin = min(model.rgrid(2,:));
 
+zmax = max(model.rgrid(3,:));
+zmin = min(model.rgrid(3,:));
 
+disx = disp(:,2);
 
+if (xmax-xmin == 0 || ymax-ymin == 0 || zmax - zmin == 0)
+    if (zmax-zmin == 0)
+        d1max = xmax;
+        d1min = xmin;
+        d1 = model.rgrid(1,:);
+        
+        d2max = ymax;
+        d2min = ymin;
+        d2 = model.rgrid(2,:);
+    else
+        ierr = 1;
+        return;
+    end
+    
+    [xmg,ymg] = meshgrid(d1min:d1max,d2min:d2max);
+    
+    [X,Y,V] = griddata(d1,d2,disx,xmg,ymg,'v4');
 
+    hold on;
+    contourf(X,Y,V,30);
+    
+    shading flat;
+    axis equal;
+    
+    colorbar;
+    
+else
+    xs = linspace(xmin,xmax);
+    ys = linspace(ymin,ymax);
+    zs = linspace(zmin,zmax);
 
+    [X,Y,Z] = meshgrid(xs,ys,zs);
+
+    V = griddata(model.rgrid(1,:)',model.rgrid(2,:)',model.rgrid(3,:)',...
+        disp(:,1),X,Y,Z);
+
+    isosurface(X,Y,Z,V);
+end
 
 
 
