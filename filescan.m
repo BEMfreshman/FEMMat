@@ -61,12 +61,22 @@ function [model,ierr] = bulkscan(fid,model)
             model.nprop = model.nprop + 1;
             model.lipprop = model.lipprop + 5;
             model.lrpprop = model.lrpprop + 6;
+        elseif (strncmpi(line(1:6),'PPLANE',6))
+            model.nprop = model.nprop + 1;
+            model.lipprop = model.lipprop + 1;
+            model.lrpprop = model.lrpprop + 1;
+            
         elseif (strncmpi(wline(1:6),'CQUAD4',6))
             model.nelem = model.nelem + 1;
 
             model.liegrid = model.liegrid + 4;
             model.lipelem = model.lipelem + 4;
             model.lrpelem = model.lrpelem + 6;
+        elseif(strncmpi(wline(1:6),'CQPSTN',6))
+            model.nelem = model.nelem + 1;
+            
+            model.liegrid = model.liegrid + 4;
+            model.lipelem = model.lipelem + 1;
         elseif (strncmpi(wline(1:1),'*',1) || ...
                 strncmpi(wline(1:1),'+',1))
             continue;

@@ -211,7 +211,7 @@ ymin = min(model.rgrid(2,:));
 zmax = max(model.rgrid(3,:));
 zmin = min(model.rgrid(3,:));
 
-disx = disp(:,2);
+disx = disp(:,1);
 
 if (xmax-xmin == 0 || ymax-ymin == 0 || zmax - zmin == 0)
     if (zmax-zmin == 0)
@@ -247,7 +247,7 @@ else
     [X,Y,Z] = meshgrid(xs,ys,zs);
 
     V = griddata(model.rgrid(1,:)',model.rgrid(2,:)',model.rgrid(3,:)',...
-        disp(:,1),X,Y,Z);
+        dispx,X,Y,Z);
 
     isosurface(X,Y,Z,V);
 end
