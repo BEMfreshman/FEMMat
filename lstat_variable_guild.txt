@@ -9,3 +9,5 @@ istsub(*,nstsub):
     (3,.) - load id
     (4,.) - load user id
     (5,.) - spc  id
+    (6,.) - nlparm
+    (7,.) - load step (temporary, it should be replaced by iid of nlparm)

@@ -14,6 +14,7 @@ model.ncmat = 1;
 model.ncfrc = 1;
 model.ncpres = 1;
 model.ncspc = 1;
+model.ncnlparm = 1;
 
 model.igrid  = [];   % igrid(5,ngrid)
 model.rgrid  = [];   % rgrid(3,ngrid)
@@ -107,8 +108,6 @@ model.lrpspc = 0;
 % model.wrpspc = [];
 
 model.inlprm  = [];
-model.ipnlprm = [];
-model.rpnlprm = [];
 
 % isubtype
 % 1 - STAT
@@ -138,26 +137,46 @@ model.npres0 = 0;
 model.nspc  = 0;
 model.nspc0 = 0;
 
+model.nnlparm = 0;
+
 % local var
 nstt   = model.nstsub;   % number of static analysis (include linear and nonlinear)
 nnlstt = model.nnlstt;   % number of nonlinear static analysis
 
-% hard code
-nstt = 1;
-nnlstt = 0;
+% hard code for static analysis
+% nstt = 1;
+% nnlstt = 0;
+% 
+% model.nstsub = 1;
+% model.istsub = zeros(5,nstt);
+% model.istsub(1,1) = 1;
+% model.istsub(2,1) = 1;
+% model.istsub(3,1) = 1;
+% model.istsub(4,1) = 1;
+% model.istsub(5,1) = 1;
+
+
+% hard code for nonlinear static analysis
+nstt = 0;
+nnlstt = 1;
+
+nsttot = nstt + nnlstt;
 
 model.nstsub = 1;
-model.istsub = zeros(5,nstt);
+model.istsub = zeros(5,nsttot);
 model.istsub(1,1) = 1;
-model.istsub(2,1) = 1;
+model.istsub(2,1) = 2;
 model.istsub(3,1) = 1;
 model.istsub(4,1) = 1;
 model.istsub(5,1) = 1;
+model.istsub(6,1) = 1;
+
 
 
 %% pre-process
 %filename = "test/48model.fem";
-filename = 'test/50elem_plane.bdf';
+%filename = 'test/50elem_plane.bdf';
+filename = 'test/simpleNL.bdf';
 
 [model,ierr] = readfem(filename,model);
 if (ierr ~=0 ) 
@@ -190,7 +209,7 @@ if (nstt - nnlstt ~= 0)
    [disp,ierr] = lstat_main(model);
 else
    % non-linear static
-    
+   [disp,ierr] = nlstat_main(model);
 end
 
 if (ierr ~= 0)

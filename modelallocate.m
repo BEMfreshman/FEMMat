@@ -29,6 +29,8 @@ function [model,ierr] = modelallocate(model)
     model.ispc   = zeros(6,model.nspc);
     model.ipspc  = zeros(model.lipspc,1);
     model.rpspc  = zeros(model.lrpspc,1);
+    
+    model.inlparm = zeros(4,model.nnlparm);
 
     % the sub
 
