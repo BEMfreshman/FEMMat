@@ -57,6 +57,10 @@ function [model,ierr] = bulkscan(fid,model)
         elseif (strncmpi(wline(1:4),'MAT1',4))
             model.nmat = model.nmat + 1;
             model.lrpmat = model.lrpmat + 7;
+        elseif (strncmpi(wline(1:5),'MATS1',5))
+            model.nmat = model.nmat + 1;
+            model.lipmat = model.lipmat + 4;
+            model.lrpmat = model.lrpmat + 1;
         elseif (strncmpi(line(1:6),'PSHELL',6))
             model.nprop = model.nprop + 1;
             model.lipprop = model.lipprop + 5;

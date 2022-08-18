@@ -28,7 +28,7 @@ function [model,ierr] = mat1reader(line,fid,model)
     RHO = f2d(wline,hasstr,6,RHO);
     A = f2d(wline,hasstr,7,A);
 
-    imat = [mid,imattype,model.ptmat(1),0,model.ptmat(2),7];
+    imat = [mid,imattype,model.ptmat(1),0,model.ptmat(2),7]';
     model.imat(:,model.ncmat) = imat;
     model.ncmat = model.ncmat + 1;
 
