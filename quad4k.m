@@ -34,27 +34,38 @@ for i = 1:4
    coords(:,i) = rgrid(:,gi(i));
 end
 
-
-imcid  = ipelem(ip_ipdata + 1); 
-
-% only mid1 would be considered now  8-6
-idmat1 = ipprop(ip_ipprop);
-idmat2 = ipprop(ip_ipprop+1);
-idmat3 = ipprop(ip_ipprop+2);
-idmat4 = ipprop(ip_ipprop+3);
-
-if (idmat1 ~=0 && (idmat2 == 0 || idmat2 == -1) && idmat3 == 0 && idmat4 == 0)
-    % PLANE STRESS OR PLANE STRAIN
+iptype = iprop(2,pid);
+if (iptype == 1) then
     
-    if (idmat2 == -1) 
-        strtype = 'PLANESTRAIN';
-    else
-        strtype = 'PLANESTRESS';
+    % PSHELL
+
+    imcid  = ipelem(ip_ipdata + 1); 
+
+    % only mid1 would be considered now  8-6
+    idmat1 = ipprop(ip_ipprop);
+    idmat2 = ipprop(ip_ipprop+1);
+    idmat3 = ipprop(ip_ipprop+2);
+    idmat4 = ipprop(ip_ipprop+3);
+
+    if (idmat1 ~=0 && (idmat2 == 0 || idmat2 == -1) && idmat3 == 0 && idmat4 == 0)
+        % PLANE STRESS OR PLANE STRAIN
+
+        if (idmat2 == -1) 
+            strtype = 'PLANESTRAIN';
+        else
+            strtype = 'PLANESTRESS';
+        end
+
+    elseif (idmat1 ~=0 && idmat2 ~=0 && idmat3 ==0 && idmat4 == 0)
+        % THINPLATE or MINDLINPLATE
+
     end
     
-elseif (idmat1 ~=0 && idmat2 ~=0 && idmat3 ==0 && idmat4 == 0)
-    % THINPLATE or MINDLINPLATE
-    
+elseif (iptype == 2)
+    strtype = 'PLANESTRAIN';
+else
+    ierr = 1;
+    return;
 end
 
 % build shell coordinate system, however this trnsm is used to 

@@ -15,6 +15,9 @@ PSHELL:
     (3,.) - MID3
     (4,.) - MID4
     (5,.) - TFLAG
+
+PPLANE:
+    (1,.) - MID
     
 
 rpprop(*)
@@ -27,3 +30,5 @@ PSHELL:
     (5,.) - Z1
     (6,.) - Z2
 
+PPLANE:
+    (1,.) - T

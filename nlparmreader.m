@@ -1,4 +1,4 @@
-function [model,ierr] = nlparmreader(wline,fid,model)
+function [model,ierr] = nlparmreader(line,fid,model)
     
     [wline,hasstr] = preprocesstext(line,72);
     
