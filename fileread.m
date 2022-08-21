@@ -50,6 +50,9 @@ function [model,ierr] = bulkread(fid,model)
             % MAT
         elseif (strncmpi(line(1:4),'MAT1',4))
             [model,ierr] = mat1reader(wline,fid,model);
+        
+        elseif (strncmpi(line(1:5),'MATS1',5))
+            [model,ierr] = mats1reader(wline,fid,model);
             
             % PLOAD
         elseif (strncmpi(line(1:6),'PLOAD4',6))

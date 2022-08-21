@@ -116,6 +116,95 @@ for iload = 1:nstsub
             
             for ie = 1:nelem
                 % calculate dstrain on gauss int point of each element
+                eiid   = ielem(1,ie);
+                ietype = ielem(2,ie);
+                
+                ptipelem = ielem(4,ie);
+                pid = iprop(ptipelem);   % internal prop id
+                
+                [D,ierr] = shellsmat(strtype,eid,ietype,model.ielem,...
+                     model.ipelem,model.rpelem,pid,model.iprop,...
+                     model.ipprop,model.rpprop,model.imat,...,
+                     model.ipmat,model.rpmat);
+                 
+                if (ietype == 3)
+                    % cquad4
+                    
+                elseif (ietype == 4)
+                    % cqpstn
+                    
+                    % get id of mat1 and mats1
+                    
+                    ip_ipprop = iprop(3,pid);
+                    mid     = ipprop(ip_ipprop);
+                    
+                    imattype  = imat(2,mid);
+                    ip_ipmat  = imat(3,mid);
+                    
+                    if (imattype == 1) 
+                        % mat1
+                        msid = ipmat(ip_ipmat); 
+                    else
+                        ierr = 1;
+                        return;
+                    end
+                    
+                    if (msid == 0)
+                        % no mats1 material
+                        disp('no mats1 was found');
+                        ierr = 1;
+                        return;
+                    end
+                    
+                    % key mats1 parameter
+                    ip_ipmats = model.imats(3,msid);
+                    ip_rpmats = model.imats(5,msid);
+                    
+                    h    = model.rpmats(ip_rpmats);
+                    lit1 = model.rpmats(ip_rpmats+1);
+                    
+                    
+                    
+                    
+                    % calulate strn due to disp
+                    
+                    vldocloc = [1,2,4]';
+                    strs = quad4_strs_int(strtype,eiid,model.ielem,...
+                                            model.iegrid,model.rgrid,...
+                                            vldocloc,D,disp);
+                    
+                    % calulate trial dstrs
+                    
+                    [dstrn,ierr] = quad4_strn_int(strtype,eiid,model.ielem,...
+                                            model.iegrid,model.rgrid,vldocloc,...
+                                            du);  
+                    if (ierr ~= 0)
+                        return;
+                    end
+                    
+                    [dstrs_trial,ierr] = strn2strs(dstrn,vldocloc,D);
+
+                    strs_trial = strs + dstrs_trial; % (6,ngint)
+
+                    % calculte I1 J2 J3 and theta
+                    
+                    [~,ngint] = siz(strs_trial);
+                    
+                    for i = 1:ngint
+                        [i1,i2,i3,j1,j2,j3,ierr] = strsIJ(strs_trial(:,i));
+                        if (ierr ~=0)
+                            return;
+                        end
+                        
+                        
+                    end
+                    
+                    
+                else
+                    
+                end
+                
+                
                 
             end
 

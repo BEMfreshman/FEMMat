@@ -10,7 +10,8 @@ imattype:
     1 - MAT1
 
 ipmat(*)    
-
+MAT1:
+    (1,.) - id for mats1
 
 rpmat(*)
 

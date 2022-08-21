@@ -51,8 +51,7 @@ for i = 1:ngint
     
     if (strcmp(strtype,'PLANESTRESS') || strcmp(strtype,'PLANESTRAIN'))
         b = zeros(3,8);
-        
-        
+
         for j = 1 : 4
             dndg = invj * dndli(:,j);
 

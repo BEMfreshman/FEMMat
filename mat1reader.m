@@ -31,6 +31,9 @@ function [model,ierr] = mat1reader(line,fid,model)
     imat = [mid,imattype,model.ptmat(1),0,model.ptmat(2),7]';
     model.imat(:,model.ncmat) = imat;
     model.ncmat = model.ncmat + 1;
+    
+    ipmat = [0];
+    model.ipmat(model.ptmat(1):model.ptmat(1)+1-1) = ipmat;
 
     rpmat = [E,G,Nu,RHO,A,TREF,GE]';
     model.rpmat(model.ptmat(2):model.ptmat(2)+7-1) = rpmat;

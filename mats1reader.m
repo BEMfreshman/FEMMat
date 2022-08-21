@@ -34,17 +34,25 @@ function [model,ierr] = mats1reader(line,fid,model)
     hr = 1;
     hr = f2d(wline,hasstr,7,hr);
     
-    imats1 = [mid,imattype,model.ptmat(1),4,model.ptmat(2),1]';
-    model.imat(:,model.ncmat) = imats1;
-    model.ncmat = model.ncmat + 1;
+    if (hasstr(8) == 0) 
+        ierr = 1;
+        return;
+    end
     
-    ipmat = [tid,itype,yf,hr]';
-    model.ipmat(model.ptmat(1):model.ptmat(1)+4-1) = ipmat;
+    lit1 = 0.0;
+    lit1 = f2d(wline,hasstr,8,lit1);  
     
-    rpmat = h;
-    model.rpmat(model.ptmat(1):model.ptmat(1)+1-1) = rpmat;
+    imats1 = [mid,imattype,model.ptmats(1),4,model.ptmats(2),1]';
+    model.imats(:,model.ncmats) = imats1;
+    model.ncmats = model.ncmats + 1;
     
-    model.ptmat(1) = model.ptmat(1) + 4;
-    model.ptmat(2) = model.ptmat(2) + 1;
+    ipmats = [tid,itype,yf,hr]';
+    model.ipmats(model.ptmats(1):model.ptmats(1)+4-1) = ipmats;
+    
+    rpmats = [h,lit1];
+    model.rpmats(model.ptmats(1):model.ptmats(1)+2-1) = rpmats;
+    
+    model.ptmats(1) = model.ptmats(1) + 4;
+    model.ptmats(2) = model.ptmats(2) + 2;
     
 end

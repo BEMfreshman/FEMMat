@@ -10,10 +10,11 @@ model.neletype = 3;
 model.ncgrid = 1;
 model.ncelem = 1;
 model.ncprop = 1;
-model.ncmat = 1;
-model.ncfrc = 1;
+model.ncmat  = 1;
+model.ncmats = 1;
+model.ncfrc  = 1;
 model.ncpres = 1;
-model.ncspc = 1;
+model.ncspc  = 1;
 model.ncnlparm = 1;
 
 model.igrid  = [];   % igrid(5,ngrid)
@@ -56,6 +57,17 @@ model.rpmat = [];
 
 model.lipmat = 0;
 model.lrpmat = 0;
+
+
+model.ptmats = zeros(2,1) + 1;
+
+model.imats = [];
+model.ipmats = [];
+model.rpmats = [];
+
+model.lipmats = 0;
+model.lrpmats = 0;
+
 
 model.ptfrc = zeros(2,1) + 1;
 
@@ -126,6 +138,7 @@ model.nnlstt = 0;
 model.ngrid = 0;
 model.nelem = 0;
 model.nmat  = 0;
+model.nmats = 0;
 model.nprop = 0;
 
 model.nfrc  = 0;

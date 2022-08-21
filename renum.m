@@ -62,5 +62,22 @@ for i = 1:model.nprop
     end
 end
 
+
+% renum mats in mat1 if there is mats
+if (model.nmats > 0)
+    for i = 1:model.nmat
+        mid = model.imat(1,i);
+        imattype = model.imat(2,i);
+        ptipmat  = model.imat(3,i);
+        if (imattype == 1)
+            % mat1
+            iid = find(mid == model.imats(1,:));
+            if (~isemtpy(iid))
+                model.ipmat(ptipmat) = iid;
+            end
+        end
+    end
+end
+
 end
 
