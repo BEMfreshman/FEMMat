@@ -1,18 +1,21 @@
-function [strn,ierr] = quad4_strn_int(strtype,eid,ielem,iegrid,...
-                            rgrid,vldocloc,disp)
+function [strn,ierr] = quad4_strn_int(strtype,gi,btoltrnsm,...
+                            vldocloc,order,disp)
 
     % calculate strain on gauss int point according to disp
     
     ierr = 0;
+    if (order == 0)
+        ierr = 1;
+        return;
+    end
 
     % build disp (6*4)
     
-    gi = iegrid(ip_iegrid:ip_iegrid+4-1);
+    % gi = iegrid(ip_iegrid:ip_iegrid+4-1);
     dofloc = gidtodofid(gi);
     
     disp64 = reshape(disp(dofloc),[],4);
 
-    order = 2;
     ngint = order * order;
     
     strn = zeros(6,ngint);
@@ -36,7 +39,7 @@ function [strn,ierr] = quad4_strn_int(strtype,eid,ielem,iegrid,...
         return;
     end
     
-    [~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
+    % [~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
     
     trsmtx = zeros(6,6);
     trsmtx(1:3,1:3) = btoltrnsm(1:3,1:3);

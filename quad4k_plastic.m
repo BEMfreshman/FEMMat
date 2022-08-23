@@ -1,6 +1,10 @@
-function [ke,dofloc,ierr] = quad4k_plastic(eid,ietype,ielem,iegrid,rgrid,ipelem,rpelem, ...
-                              iprop,ipprop,rpprop,imat,ipmat,rpmat)
+function [ke,dofloc,dR,ierr] = quad4k_plastic(eid,ietype,ielem,iegrid,rgrid,ipelem,rpelem, ...
+                              iprop,ipprop,rpprop,imat,ipmat,rpmat,...
+                              imats,ipmats,rpmats,u,du)
     % build tangent stiffness matrix
+    % reference Ying Youquan book 3-6-25 for its meaning
+    % Book Name <Nonlinear Finite Element Method fundament> 
+    % (This is a Chinese book)
      
     ierr= 0;
 
@@ -22,7 +26,10 @@ function [ke,dofloc,ierr] = quad4k_plastic(eid,ietype,ielem,iegrid,rgrid,ipelem,
     end
 
     iptype = iprop(2,pid);
-    if (iptype == 1) then
+    if (iptype == 1)
+        
+        ierr = 1;    % 8-23 skip PSHELL for plastic analysis
+        return;
 
         % PSHELL
 
@@ -49,30 +56,64 @@ function [ke,dofloc,ierr] = quad4k_plastic(eid,ietype,ielem,iegrid,rgrid,ipelem,
         end
 
     elseif (iptype == 2)
+        
+        % PPLANE
         strtype = 'PLANESTRAIN';
+        
+        ip_ipprop = iprop(3,pid);
+        mid     = ipprop(ip_ipprop);
+
+        imattype  = imat(2,mid);
+        ip_ipmat  = imat(3,mid);
+
+        if (imattype == 1) 
+            % mat1
+            msid = ipmat(ip_ipmat); 
+        else
+            ierr = 1;
+            return;
+        end
+
+        if (msid == 0)
+            % no mats1 material
+            disp('no mats1 was found');
+            ierr = 1;
+            return;
+        end
+
+        % key mats1 parameter
+        ip_ipmats = imats(3,msid);
+        ip_rpmats = imats(5,msid);
+
+        tid       = ipmats(ip_ipmats);
+        mats1type = ipmats(ip_ipmats+1);
+        yf        = ipmats(ip_ipmats+2);
+        hr        = ipmats(ip_ipmats+3);
+
+        h    = rpmats(ip_rpmats);
+        lit1 = rpmats(ip_rpmats+1);
+        
+        % build shell coordinate system, however this trnsm is used to 
+        % trans coord in element cord system to basic system
+        [~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
+
+        lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
+
+        [D,ierr] = shellsmat(strtype,eid,ietype,ielem,ipelem,rpelem,pid,iprop,ipprop,...
+                              rpprop,imat,ipmat,rpmat);
+        if (ierr ~= 0)
+            return
+        end
+
+        [ke,dofloc,dR,ierr] = shellk_plastic(strtype,D,gi,lcoords,tid,...
+                            mats1type,yf,hr,h,lit1,btoltrnsm,u,du);
+        if (ierr ~= 0)
+            return
+        end
     else
         ierr = 1;
         return;
     end
 
-    % build shell coordinate system, however this trnsm is used to 
-    % trans coord in element cord system to basic system
-    [~,btoltrnsm] = shellcord(eid,ielem,iegrid,rgrid);
-
-    lcoords = btoltrnsm(1:3,1:3) * (coords - repmat(btoltrnsm(:,4),1,4));
-
-%     [D,ierr] = shellsmat(strtype,eid,ietype,ielem,ipelem,rpelem,pid,iprop,ipprop,...
-%                          rpprop,imat,ipmat,rpmat);
-
-    % build Dep matrix
     
-
-    if (ierr ~= 0)
-        return
-    end
-
-    [ke,dofloc,ierr] = shellk(strtype,D,gi,lcoords(1:2,:));
-    if (ierr ~= 0)
-        return
-    end
 end

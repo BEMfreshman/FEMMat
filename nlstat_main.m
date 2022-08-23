@@ -20,6 +20,7 @@ spakt = sparse(ngrid*6,ngrid*6);    % tangent sparse stiffness matrix
 spaf = sparse(ngrid*6,1);
 
 spadf = sparse(ngrid*6,1);
+spadr = sparse(ngrid*6,1);
 
 % nonlinear state
 nlstat.itime = 0;
@@ -35,6 +36,10 @@ nlstat.disp_cur = zeros(ngrid*6,1);
 nlstat.disp_last_iter = zeros(ngrid*6,1);
 nlstat.disp_last_subiter = zeros(ngrid*6,1);
 
+
+% residual rhs
+nlstat.rsd_rhs_cur = zeros(ngrid*6,1);
+nlstat.rsd_rhs_cur_last_subiter = zeros(ngrid*6,1);
 
 % local var
 max_sub_niter = 50;
@@ -76,138 +81,93 @@ for iload = 1:nstsub
             
             
         end
-        
+
+        u_prev = nlstat.disp_last_iter;
+        u_now  = nlstat.disp_iter;
+
+        nlstat.n_subiter = 1;
         while(nlstat.n_subiter <= max_sub_niter)
             
             gdofloc = [1:6*ngrid]';
             
             % build k and f
-            for ie = 1:nelem
-                eiid   = ielem(1,ie);
-                ietype = ielem(2,ie);
-                if (ietype == 3)
-                    % cquad4
-                    
-                elseif (ietype == 4)
-                    % cqpstn
-                    
-                    % todo
-                    [ket,dofloc,ierr] = quad4k_tangent(eiid,ietype,model.ielem,model.iegrid,model.rgrid,...
-                                    model.ipelem,model.rpelem,model.iprop,model.ipprop,...
-                                    model.rpprop,model.imat,model.ipmat,model.rpmat);
-                else
-                    ierr  = 1;
-                    return;
-                end
-                
-                [ltobtrnsm,~] = shellcord(eiid,model.ielem,model.iegrid,...
-                                      model.rgrid);
-            
-                [spakt,ierr] = assemblek(ket,dofloc,ltobtrnsm,spakt);
+%             for ie = 1:nelem
+%                 eiid   = ielem(1,ie);
+%                 ietype = ielem(2,ie);
+%                 if (ietype == 3)
+%                     % cquad4
+%                     
+%                 elseif (ietype == 4)
+%                     % cqpstn
+%                     
+%                     % todo
+%                     [ket,dofloc,ierr] = quad4k_tangent(eiid,ietype,model.ielem,model.iegrid,model.rgrid,...
+%                                     model.ipelem,model.rpelem,model.iprop,model.ipprop,...
+%                                     model.rpprop,model.imat,model.ipmat,model.rpmat);
+%                 else
+%                     ierr  = 1;
+%                     return;
+%                 end
+%                 
+%                 [ltobtrnsm,~] = shellcord(eiid,model.ielem,model.iegrid,...
+%                                       model.rgrid);
+%             
+%                 [spakt,ierr] = assemblek(ket,dofloc,ltobtrnsm,spakt);
+%             end
+
+            u = nlstat.disp_iter;
+            if (nlstat.n_subiter == 1)
+                du = nlstat.disp_cur - nlstat.disp_last_iter;
+            else
+                du = nlstat.disp_cur - nlstat.disp_last_subiter;
             end
-            
-            % solve disp_inc
-            [disp_inc0] = lsqr(spakt,spadf,1e-6,500);
-            
-            du = zeros(ngrid*6,1);
-            du(gdofloc) = disp_inc0;
-            
-            nlstat.disp_cur = nlstat.disp_last_subiter + du;
-            
+
+            nlstat.disp_iter = nlstat.disp_cur;
+
             for ie = 1:nelem
                 % calculate dstrain on gauss int point of each element
-                eiid   = ielem(1,ie);
+                eid   = ielem(1,ie);
                 ietype = ielem(2,ie);
                 
-                ptipelem = ielem(4,ie);
-                pid = iprop(ptipelem);   % internal prop id
-                
-                [D,ierr] = shellsmat(strtype,eid,ietype,model.ielem,...
-                     model.ipelem,model.rpelem,pid,model.iprop,...
-                     model.ipprop,model.rpprop,model.imat,...,
-                     model.ipmat,model.rpmat);
-                 
                 if (ietype == 3)
                     % cquad4
                     
                 elseif (ietype == 4)
                     % cqpstn
                     
-                    % get id of mat1 and mats1
-                    
-                    ip_ipprop = iprop(3,pid);
-                    mid     = ipprop(ip_ipprop);
-                    
-                    imattype  = imat(2,mid);
-                    ip_ipmat  = imat(3,mid);
-                    
-                    if (imattype == 1) 
-                        % mat1
-                        msid = ipmat(ip_ipmat); 
-                    else
-                        ierr = 1;
-                        return;
-                    end
-                    
-                    if (msid == 0)
-                        % no mats1 material
-                        disp('no mats1 was found');
-                        ierr = 1;
-                        return;
-                    end
-                    
-                    % key mats1 parameter
-                    ip_ipmats = model.imats(3,msid);
-                    ip_rpmats = model.imats(5,msid);
-                    
-                    h    = model.rpmats(ip_rpmats);
-                    lit1 = model.rpmats(ip_rpmats+1);
-                    
-                    
-                    
-                    
-                    % calulate strn due to disp
-                    
-                    vldocloc = [1,2,4]';
-                    strs = quad4_strs_int(strtype,eiid,model.ielem,...
-                                            model.iegrid,model.rgrid,...
-                                            vldocloc,D,disp);
-                    
-                    % calulate trial dstrs
-                    
-                    [dstrn,ierr] = quad4_strn_int(strtype,eiid,model.ielem,...
-                                            model.iegrid,model.rgrid,vldocloc,...
-                                            du);  
+                    [ket,dofloc,dR,ierr] = quad4k_plastic(eid,ietype,...
+                                model.ielem,model.iegrid,model.rgrid,...
+                                model.ipelem,model.rpelem, model.iprop,...
+                                model.pprop,model.rpprop,model.imat,...
+                                model.ipmat,model.rpmat,model.imats,...
+                                model.ipmats,model.rpmats,u,du);
+                            
                     if (ierr ~= 0)
                         return;
                     end
-                    
-                    [dstrs_trial,ierr] = strn2strs(dstrn,vldocloc,D);
 
-                    strs_trial = strs + dstrs_trial; % (6,ngint)
+                    [spak,ierr] = assemblek(ket,dofloc,ltobtrnsm,spak);
+                    spadr(dofloc)  = spadr(dofloc) + dR;
 
-                    % calculte I1 J2 J3 and theta
-                    
-                    [~,ngint] = siz(strs_trial);
-                    
-                    for i = 1:ngint
-                        [i1,i2,i3,j1,j2,j3,ierr] = strsIJ(strs_trial(:,i));
-                        if (ierr ~=0)
-                            return;
-                        end
-                        
-                        
-                    end
-                    
-                    
                 else
-                    
+                    if (ierr ~= 0)
+                        return;
+                    end
                 end
-                
-                
-                
             end
 
+            % solve disp_inc
+            % [disp_inc0] = lsqr(spakt,spadf - nlstat.rsd_rhs_cur + spadr,1e-6,500);
+            [disp_inc0] = lsqr(spakt,spadf + spadr,1e-6,500);
+
+            du(gdofloc) = disp_inc0;
+            nlstat.disp_cur = nlstat.disp_last_subiter + du;
+
+            % nlstat.rsd_rhs_cur_last_subiter = nlstat.rsd_rhs_cur;
+
+            % [nlstat.rsd_rhs_cur] = calresidual(nlstat.disp_cur,spakt,spadf);
+
+            % criterion
         end
     end
 end
