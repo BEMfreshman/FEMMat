@@ -170,7 +170,7 @@ nnlstt = model.nnlstt;   % number of nonlinear static analysis
 
 
 % hard code for nonlinear static analysis
-nstt = 0;
+nstt = 1;
 nnlstt = 1;
 
 nsttot = nstt + nnlstt;

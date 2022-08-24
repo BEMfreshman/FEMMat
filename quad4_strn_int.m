@@ -1,4 +1,4 @@
-function [strn,ierr] = quad4_strn_int(strtype,gi,btoltrnsm,...
+function [strn,ierr] = quad4_strn_int(strtype,gi,elcoord,btoltrnsm,...
                             vldocloc,order,disp)
 
     % calculate strain on gauss int point according to disp
@@ -27,14 +27,16 @@ function [strn,ierr] = quad4_strn_int(strtype,gi,btoltrnsm,...
 
     xc = zeros(2,ngint);
     
+    inc = 1;
     for i = 1:order
         for jac = 1:order
             xc(1,inc) = x(i);
             xc(2,inc) = x(jac);
+            inc = inc + 1;
         end
     end
 
-    [~,dndl,ierr] = quad4nfun(strtype,xc);
+    [nfun,dndl,ierr] = quad4nfun(strtype,xc);
     if (ierr ~=0)
         return;
     end
@@ -48,6 +50,18 @@ function [strn,ierr] = quad4_strn_int(strtype,gi,btoltrnsm,...
     for i = 1:ngint
         
         dndli = dndl(:,2*i-1:2*i)';  % size is (4,1)
+        
+        jac = dndli * elcoord'; % [2 * 4] * [4 * 2]
+
+        detj = det(jac);
+
+        invj = zeros(2);
+        invj(1,1) =  jac(2,2);
+        invj(1,2) = -jac(1,2);
+        invj(2,1) = -jac(2,1);
+        invj(2,2) =  jac(1,1);
+
+        invj = invj / detj;
         
         % strain-disp matrix b
         if (strcmp(strtype,'PLANESTRESS') || strcmp(strtype,'PLANESTRAIN'))
@@ -65,12 +79,13 @@ function [strn,ierr] = quad4_strn_int(strtype,gi,btoltrnsm,...
                 b(:,2*j-1:2*j) = subb;
             end
             
-            dispint = disp64*dndli;
-            dispintlcl = trsmtx * dispint;
+            % dispint = disp64*nfun(:,i);
+            % dispintlcl = trsmtx * dispint;
 
+            disp01 = reshape(disp64,[],1);
             ldofloc = [1,2,7,8,13,14,19,20];
 
-            disp01 = reshape(dispintlcl,[],1);
+            % disp01 = reshape(dispintlcl,[],1);
 
             disp81 = disp01(ldofloc);  % [x1,y1,x1,y2,...,x4,y4]'
             

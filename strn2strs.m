@@ -8,7 +8,7 @@ function [strs,ierr] = strn2strs(strn,ldofloc,D)
     
     strs = zeros(6,nc);
     
-    strs(ldocloc,:) = D * strn(ldofloc,:);
+    strs(ldofloc,:) = D * strn(ldofloc,:);
     
 
 end

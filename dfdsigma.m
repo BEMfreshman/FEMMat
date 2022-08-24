@@ -23,10 +23,11 @@ function [dfds,ierr] = dfdsigma(yf,strs)
     dj2dsigma = [sx sy sz 2*sxy 2*syz 2*sxz]';
     
     dj3dsigma = [j2/3+sy*sz - syz^2, j2/3+sx*sz-sxz^2, j2/3+sx*sy-sxy^2,...
-            2*(syz*szx - sz*sxy),2*(sxy*syz - sx*syz),2*(sxy*syz-sy*sxz)]';
+            2*(syz*sxz - sz*sxy),2*(sxy*syz - sx*syz),2*(sxy*syz-sy*sxz)]';
 
     if (yf == 1) 
-
+        theta = 0;
+        fi = 0;
         [dfdi1,dfdj2,dfdj3,ierr] = dfdij(yf,i1,j2,j3,theta,fi);
         if (ierr ~= 0)
             return;

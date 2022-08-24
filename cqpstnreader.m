@@ -1,6 +1,6 @@
 function [model,ierr] = cqpstnreader(line,fid,model)
     
-    [wline,hasstr] = prepprocesstext(line,56); % 4 node cqpstn
+    [wline,hasstr] = preprocesstext(line,56); % 4 node cqpstn
     
     ierr = 0;
     

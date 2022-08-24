@@ -43,7 +43,7 @@ end
 
 % renum iprop id in ielem
 for i = 1:model.nelem
-    pt = model.ielem(3,i);
+    pt = model.ielem(4,i);
     model.ipelem(pt) = find (model.iprop(1,:) == model.ipelem(pt));
 end
 
@@ -72,7 +72,7 @@ if (model.nmats > 0)
         if (imattype == 1)
             % mat1
             iid = find(mid == model.imats(1,:));
-            if (~isemtpy(iid))
+            if (~isempty(iid))
                 model.ipmat(ptipmat) = iid;
             end
         end

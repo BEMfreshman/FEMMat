@@ -14,7 +14,12 @@ function [depm,ierr] = dep(yf,D,vldocloc,strs)
         return;
     end
 
-    depm = D * dfds(vldocloc) * dfds(vldocloc)' * D / ...
-        (dfds(vldocloc)' * D * dfds(vldocloc));
+    divd = dfds(vldocloc)' * D * dfds(vldocloc);
+    if (divd == 0)
+        depm = D;
+    else
+        depm = D * dfds(vldocloc) * dfds(vldocloc)' * D / ...
+            (dfds(vldocloc)' * D * dfds(vldocloc));
+    end
 
 end

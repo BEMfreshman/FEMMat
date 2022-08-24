@@ -1,7 +1,7 @@
 function [model,ierr] = mats1reader(line,fid,model)
     
     ierr = 0;
-    [wline,hasstr] = prepprocesstext(line,72);
+    [wline,hasstr] = preprocesstext(line,72);
     
     if (hasstr(2) == 0) 
         ierr = 1;

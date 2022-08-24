@@ -32,14 +32,14 @@ end
 
 vldocloc = [1,2,4]';
 
-[strn,ierr] = quad4_strn_int(strtype,gi,btoltrnsm,vldocloc,order,u);
+[strn,ierr] = quad4_strn_int(strtype,gi,lcoords(1:2,:),btoltrnsm,vldocloc,order,u);
 if (ierr ~=0)
     return;
 end
 
 [strs,~] = strn2strs(strn,vldocloc,D);
 
-[dstrn,ierr] = quad4_strn_int(strtype,gi,btoltrnsm,vldocloc,order,du);
+[dstrn,ierr] = quad4_strn_int(strtype,gi,lcoords(1:2,:),btoltrnsm,vldocloc,order,du);
 if (ierr ~=0)
     return;
 end
@@ -78,7 +78,7 @@ for i = 1:ngint
     dndli = dndl(:,2*i-1:2*i)';
     %    xct   = xc';
 
-    jac = dndli * lcoords(:,1:2)'; % [2 * 4] * [4 * 2]
+    jac = dndli * lcoords(1:2,:)'; % [2 * 4] * [4 * 2]
 
     detj = det(jac);
 

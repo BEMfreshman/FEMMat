@@ -42,10 +42,14 @@ function [model,ierr] = bulkread(fid,model)
             % ELEMENT
         elseif (strncmpi(line(1:6),'CQUAD4',6))
             [model,ierr] = cquad4reader(wline,fid,model);
-
+        elseif (strncmpi(line(1:6),'CQPSTN',6))
+            [model,ierr] = cqpstnreader(wline,fid,model);
+            
             % PROP
         elseif (strncmpi(line(1:6),'PSHELL',6))
             [model,ierr] = pshellreader(wline,fid,model);
+        elseif (strncmpi(line(1:6),'PPLANE',6))
+            [model,ierr] = pplanereader(wline,fid,model);
 
             % MAT
         elseif (strncmpi(line(1:4),'MAT1',4))
@@ -65,6 +69,9 @@ function [model,ierr] = bulkread(fid,model)
             % SPC
         elseif (strncmpi(line(1:3),'SPC',3))
             [model,ierr] = spcreader(wline,fid,model);
+            
+        elseif (strncmpi(line(1:6),'NLPARM',6))
+            [model,ierr] = nlparmreader(wline,fid,model);
         else
             ierr = 1;
             return;

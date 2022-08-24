@@ -38,7 +38,7 @@ function [model,ierr] = nlparmreader(line,fid,model)
     %  1  1  1  1  1  1 
     %  u  p  w  v  n  a
     
-    conv = wline(56+1:56+8);
+    conv = strtrim(wline(56+1:56+8));
     iconv = 0;
     
     for i = 1:length(conv)

@@ -16,6 +16,9 @@ ielem = model.ielem;
 ngrid = model.ngrid;
 nspc  = model.nspc;
 
+nfrc = model.nfrc;
+npres = model.npres;
+
 spakt = sparse(ngrid*6,ngrid*6);    % tangent sparse stiffness matrix
 spaf = sparse(ngrid*6,1);
 
@@ -73,7 +76,7 @@ for iload = 1:nstsub
         
         if (nfrc ~=0)
             [spadf,ierr] = assemblefrc_inc(loadiid,loaduid,model.ifrc,...
-                            model.ipfrc,model.rpfrc,model.jfrcmodel.nfrc,...
+                            model.ipfrc,model.rpfrc,model.jfrc,model.nfrc,...
                             model.nfrc0,cofload_prev,cofload_cur,spadf);
         end
         
@@ -81,9 +84,6 @@ for iload = 1:nstsub
             
             
         end
-
-        u_prev = nlstat.disp_last_iter;
-        u_now  = nlstat.disp_iter;
 
         nlstat.n_subiter = 1;
         while(nlstat.n_subiter <= max_sub_niter)
@@ -115,7 +115,7 @@ for iload = 1:nstsub
 %                 [spakt,ierr] = assemblek(ket,dofloc,ltobtrnsm,spakt);
 %             end
 
-            u = nlstat.disp_iter;
+            u = nlstat.disp_cur;
             if (nlstat.n_subiter == 1)
                 du = nlstat.disp_cur - nlstat.disp_last_iter;
             else
@@ -138,7 +138,7 @@ for iload = 1:nstsub
                     [ket,dofloc,dR,ierr] = quad4k_plastic(eid,ietype,...
                                 model.ielem,model.iegrid,model.rgrid,...
                                 model.ipelem,model.rpelem, model.iprop,...
-                                model.pprop,model.rpprop,model.imat,...
+                                model.ipprop,model.rpprop,model.imat,...
                                 model.ipmat,model.rpmat,model.imats,...
                                 model.ipmats,model.rpmats,u,du);
                             
@@ -167,7 +167,7 @@ for iload = 1:nstsub
 
             % [nlstat.rsd_rhs_cur] = calresidual(nlstat.disp_cur,spakt,spadf);
 
-            % criterion
+            % criterion for convergence
         end
     end
 end
