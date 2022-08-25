@@ -1,4 +1,4 @@
-function [spadf,ierr] = assemblefrc_inc(loadid,loaduid,ifrc,ipfrc,rpfrc,...
+function [spaf,ierr] = assemblefrc_inc(loadid,loaduid,ifrc,ipfrc,rpfrc,...
                                 jfrc,nfrc,nfrc0,cofload_prev,cofload_cur,...
                                 spaf)
 ierr = 0;
@@ -35,9 +35,10 @@ for i = 1:n
         f   = rpfrc(ip_rfrc);
         ni   = rpfrc(ip_rfrc+1:ip_rfrc+3);
         
-        df = (cofload_cur - cofload_prev) * f;
+        % df = (cofload_cur - cofload_prev) * f;
+        f_cur = cofload_cur * f;
 
-        [spadf,ierr] = frcongrid(g,cid,df,ni,spaf);
+        [spaf,ierr] = frcongrid(g,cid,f_cur,ni,spaf);
     else
         ierr = 1;
         return;

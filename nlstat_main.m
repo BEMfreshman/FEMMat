@@ -19,11 +19,9 @@ nspc  = model.nspc;
 nfrc = model.nfrc;
 npres = model.npres;
 
-spakt = sparse(ngrid*6,ngrid*6);    % tangent sparse stiffness matrix
 spaf = sparse(ngrid*6,1);
 
-spadf = sparse(ngrid*6,1);
-spadr = sparse(ngrid*6,1);
+spar = sparse(ngrid*6,1);
 
 % nonlinear state
 nlstat.itime = 0;
@@ -35,18 +33,19 @@ nlstat.n_iter = 0;
 nlstat.n_subiter = 0;
 
 % disp 
-nlstat.disp_cur = zeros(ngrid*6,1);
+nlstat.disp_inc_cur = zeros(ngrid*6,1);
+nlstat.disp_inc_last_subiter = zeros(ngrid*6,1);
 nlstat.disp_last_iter = zeros(ngrid*6,1);
-nlstat.disp_last_subiter = zeros(ngrid*6,1);
-
 
 % residual rhs
 nlstat.rsd_rhs_cur = zeros(ngrid*6,1);
-nlstat.rsd_rhs_cur_last_subiter = zeros(ngrid*6,1);
+nlstat.rsd_rhs_cur_last_iter = zeros(ngrid*6,1);
 
 % local var
 max_sub_niter = 50;
-coeffload = 1.0;
+
+epsu = 1e-3;
+epsp = 1e-3;
 
 disp = 0;
 
@@ -66,6 +65,7 @@ for iload = 1:nstsub
     maxiter = 2;
     facloads = linspace(0,1,maxiter+1);
 
+    nlstat.n_iter = 0;
     while(nlstat.n_iter <= maxiter)
     
         % incr start
@@ -75,9 +75,9 @@ for iload = 1:nstsub
         cofload_cur  = facloads(nlstat.n_iter + 1); % skip first element, it is 0
         
         if (nfrc ~=0)
-            [spadf,ierr] = assemblefrc_inc(loadiid,loaduid,model.ifrc,...
+            [spaf,ierr] = assemblefrc_inc(loadiid,loaduid,model.ifrc,...
                             model.ipfrc,model.rpfrc,model.jfrc,model.nfrc,...
-                            model.nfrc0,cofload_prev,cofload_cur,spadf);
+                            model.nfrc0,cofload_prev,cofload_cur,spaf);
         end
         
         if (npres ~= 0)
@@ -85,44 +85,13 @@ for iload = 1:nstsub
             
         end
 
-        nlstat.n_subiter = 1;
+        nlstat.n_subiter = 0;
         while(nlstat.n_subiter <= max_sub_niter)
             
-            gdofloc = [1:6*ngrid]';
+            nlstat.n_subiter = nlstat.n_subiter + 1;
+            spakt = sparse(ngrid*6,ngrid*6);    % tangent sparse stiffness matrix
             
-            % build k and f
-%             for ie = 1:nelem
-%                 eiid   = ielem(1,ie);
-%                 ietype = ielem(2,ie);
-%                 if (ietype == 3)
-%                     % cquad4
-%                     
-%                 elseif (ietype == 4)
-%                     % cqpstn
-%                     
-%                     % todo
-%                     [ket,dofloc,ierr] = quad4k_tangent(eiid,ietype,model.ielem,model.iegrid,model.rgrid,...
-%                                     model.ipelem,model.rpelem,model.iprop,model.ipprop,...
-%                                     model.rpprop,model.imat,model.ipmat,model.rpmat);
-%                 else
-%                     ierr  = 1;
-%                     return;
-%                 end
-%                 
-%                 [ltobtrnsm,~] = shellcord(eiid,model.ielem,model.iegrid,...
-%                                       model.rgrid);
-%             
-%                 [spakt,ierr] = assemblek(ket,dofloc,ltobtrnsm,spakt);
-%             end
-
-            u = nlstat.disp_cur;
-            if (nlstat.n_subiter == 1)
-                du = nlstat.disp_cur - nlstat.disp_last_iter;
-            else
-                du = nlstat.disp_cur - nlstat.disp_last_subiter;
-            end
-
-            nlstat.disp_iter = nlstat.disp_cur;
+            gdofloc = [1:6*ngrid]';
 
             for ie = 1:nelem
                 % calculate dstrain on gauss int point of each element
@@ -135,19 +104,23 @@ for iload = 1:nstsub
                 elseif (ietype == 4)
                     % cqpstn
                     
-                    [ket,dofloc,dR,ierr] = quad4k_plastic(eid,ietype,...
+                    [ket,dofloc,R,ierr] = quad4k_plastic(eid,ietype,...
                                 model.ielem,model.iegrid,model.rgrid,...
                                 model.ipelem,model.rpelem, model.iprop,...
                                 model.ipprop,model.rpprop,model.imat,...
                                 model.ipmat,model.rpmat,model.imats,...
-                                model.ipmats,model.rpmats,u,du);
+                                model.ipmats,model.rpmats,...
+                                nlstat.disp_last_iter,nlstat.disp_inc_cur);
                             
                     if (ierr ~= 0)
                         return;
                     end
+                    
+                    [ltobtrnsm,~] = shellcord(eid,model.ielem,...
+                                        model.iegrid,model.rgrid);
 
-                    [spak,ierr] = assemblek(ket,dofloc,ltobtrnsm,spak);
-                    spadr(dofloc)  = spadr(dofloc) + dR;
+                    [spakt,ierr] = assemblek(ket,dofloc,ltobtrnsm,spakt);
+                    spar(dofloc)  = spar(dofloc) + R;
 
                 else
                     if (ierr ~= 0)
@@ -155,19 +128,46 @@ for iload = 1:nstsub
                     end
                 end
             end
+            
+            % spc
+            % _rd matrix has been cancelled row and col with all 0
+            [spakt_rd,spaf_rd,gdofloc,ierr] = applyspc(spciid,model.ispc,model.ipspc,...
+                                model.rpspc,model.nspc,model.jspc,...
+                                model.nspc0,spakt,spaf,gdofloc);
+            if (ierr ~= 0) 
+                return;
+            end
+            
+            spaf(gdofloc) = spaf_rd;  % retrieve back to full matrix
 
             % solve disp_inc
             % [disp_inc0] = lsqr(spakt,spadf - nlstat.rsd_rhs_cur + spadr,1e-6,500);
-            [disp_inc0] = lsqr(spakt,spadf + spadr,1e-6,500);
-
-            du(gdofloc) = disp_inc0;
-            nlstat.disp_cur = nlstat.disp_last_subiter + du;
+            du = lsqr(spakt_rd,spaf_rd + spar(gdofloc) - nlstat.rsd_rhs_cur(gdofloc),...
+                                    1e-6,500);
+                                
+            nlstat.disp_inc_cur(gdofloc) = du;
+            disp_cur = nlstat.disp_last_iter + nlstat.disp_inc_cur;
 
             % nlstat.rsd_rhs_cur_last_subiter = nlstat.rsd_rhs_cur;
 
-            % [nlstat.rsd_rhs_cur] = calresidual(nlstat.disp_cur,spakt,spadf);
+            [nlstat.rsd_rhs_cur(gdofloc)] = calresidual(du,spakt_rd,spaf_rd);
 
             % criterion for convergence
+            
+            [uer,ler,ierr] = nlconvergence('smalldisp',disp_cur(gdofloc),...
+                                nlstat.disp_inc_last_subiter(gdofloc),...
+                                nlstat.disp_inc_cur(gdofloc),...
+                                spakt_rd,spaf_rd,spar(gdofloc));
+                            
+            if (abs(uer) < epsu && abs(ler) < epsp)
+                nlstat.disp_last_iter = disp_cur;
+                nlstat.rsd_rhs_cur_last_iter = nlstat.rsd_rhs_cur;
+                break;
+            else
+                % need more sub_iter
+                nlstat.disp_inc_last_subiter = nlstat.disp_inc_cur;
+                nlstat.rsd_rhs_cur_last_iter = nlstat.rsd_rhs_cur;
+            end
         end
     end
 end
