@@ -64,15 +64,20 @@ for i = 1:ngint
         ierr = 1;
         return;
     end
+    
+    elaflg = 1;
 
     if (F1 > 0)
+        elaflg = 0;
         error('plastic mode, has not been completed');
     end
 
+    % dstrs = strs_trial(:,i) - strs_real_int;
+    dstrs = dstrs_trial(:,i);
     strs_real_int = strs_trial(:,i);
-    dstrs = strs_trial(:,i) - strs_real_int;
+    
 
-    [depm,ierr] = dep(yf,D,vldocloc,strs_real_int);
+    [depm,ierr] = dep(yf,D,vldocloc,strs_real_int,elaflg);
 
     % jacobian matrix and its invert
     dndli = dndl(:,2*i-1:2*i)';

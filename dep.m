@@ -1,4 +1,4 @@
-function [depm,ierr] = dep(yf,D,vldocloc,strs)
+function [depm,ierr] = dep(yf,D,vldocloc,strs,elaflg)
     
     % associated flow-rule would be considered here
 
@@ -6,6 +6,11 @@ function [depm,ierr] = dep(yf,D,vldocloc,strs)
 
     if (yf ~=1)   % not mise
         ierr = 1;
+        return;
+    end
+    
+    if (elaflg == 1)
+        depm = D;
         return;
     end
 

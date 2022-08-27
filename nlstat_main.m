@@ -66,6 +66,7 @@ for iload = 1:nstsub
     facloads = linspace(0,1,maxiter+1);
 
     nlstat.n_iter = 0;
+    nlstat.q = 0.99;
     while(nlstat.n_iter <= maxiter)
     
         % incr start
@@ -154,11 +155,11 @@ for iload = 1:nstsub
 
             % criterion for convergence
             
-            [uer,ler,ierr] = nlconvergence('smalldisp',disp_cur(gdofloc),...
+            [uer,ler,q_cur,ierr] = nlconvergence('smalldisp',disp_cur(gdofloc),...
                                 nlstat.disp_inc_last_subiter(gdofloc),...
                                 nlstat.disp_inc_cur(gdofloc),...
-                                spakt_rd,spaf_rd,spar(gdofloc));
-                            
+                                nlstat.q,spakt_rd,spaf_rd,spar(gdofloc));
+            nlstat.q = q_cur;
             if (abs(uer) < epsu && abs(ler) < epsp)
                 nlstat.disp_last_iter = disp_cur;
                 nlstat.rsd_rhs_cur_last_iter = nlstat.rsd_rhs_cur;
