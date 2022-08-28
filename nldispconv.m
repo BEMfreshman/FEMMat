@@ -1,11 +1,14 @@
-function [uer,q,ierr] = nldispconv(disptype,u,du_last,du_cur,q_last,spak)
+function [uer,q,ierr] = nldispconv(disptype,n_subiter,u_prev,u_inc,...
+                                    u_cor,q_last,spak)
     
     ierr = 0;
-    du_last_norm = norm(du_last);
-    du_cur_norm  = norm(du_cur);
+    u_inc_norm = norm(u_inc);
+    u_cor_norm  = norm(u_cor);
     
-    if (du_last_norm ~= 0)
-        q = (du_cur_norm/du_last_norm) * 2/3 + q_last/3;
+    u = u_prev + u_inc;
+    
+    if (n_subiter ~= 1)
+        q = (u_cor_norm/u_inc_norm) * 2/3 + q_last/3;
     else
         q = q_last;
     end
@@ -16,6 +19,7 @@ function [uer,q,ierr] = nldispconv(disptype,u,du_last,du_cur,q_last,spak)
         k = 1;
     end
     
-    uer = norm(du_cur.*spdiags(spak,1))/norm(u.*spdiags(spak,1)) * k;
+    uer = norm(u_cor.*spdiags(spak,1))/...
+        norm(u.*spdiags(spak,1)) * k;
 
 end

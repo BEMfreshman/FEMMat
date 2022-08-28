@@ -36,6 +36,7 @@ nlstat.n_subiter = 0;
 nlstat.disp_inc_cur = zeros(ngrid*6,1);
 nlstat.disp_inc_last_subiter = zeros(ngrid*6,1);
 nlstat.disp_last_iter = zeros(ngrid*6,1);
+nlstat.disp_cur = zeros(ngrid*6,1);
 
 % residual rhs
 nlstat.rsd_rhs_cur = zeros(ngrid*6,1);
@@ -67,6 +68,8 @@ for iload = 1:nstsub
 
     nlstat.n_iter = 0;
     nlstat.q = 0.99;
+    
+    nlstat.disp_cur = nlstat.disp_last_iter;
     while(nlstat.n_iter <= maxiter)
     
         % incr start
@@ -105,7 +108,7 @@ for iload = 1:nstsub
                 elseif (ietype == 4)
                     % cqpstn
                     
-                    [ket,dofloc,R,ierr] = quad4k_plastic(eid,ietype,...
+                    [ket,dofloc,r_cur,ierr] = quad4k_plastic(eid,ietype,...
                                 model.ielem,model.iegrid,model.rgrid,...
                                 model.ipelem,model.rpelem, model.iprop,...
                                 model.ipprop,model.rpprop,model.imat,...
@@ -121,7 +124,7 @@ for iload = 1:nstsub
                                         model.iegrid,model.rgrid);
 
                     [spakt,ierr] = assemblek(ket,dofloc,ltobtrnsm,spakt);
-                    spar(dofloc)  = spar(dofloc) + R;
+                    spar(dofloc)  = spar(dofloc) + r_cur;
 
                 else
                     if (ierr ~= 0)
@@ -132,42 +135,44 @@ for iload = 1:nstsub
             
             % spc
             % _rd matrix has been cancelled row and col with all 0
+            
+            
             [spakt_rd,spaf_rd,gdofloc,ierr] = applyspc(spciid,model.ispc,model.ipspc,...
                                 model.rpspc,model.nspc,model.jspc,...
-                                model.nspc0,spakt,spaf,gdofloc);
+                                model.nspc0,spakt,spaf-spar,gdofloc);
             if (ierr ~= 0) 
                 return;
             end
             
-            spaf(gdofloc) = spaf_rd;  % retrieve back to full matrix
+            % spaf(gdofloc) = spaf_rd;  % retrieve back to full matrix
 
             % solve disp_inc
             % [disp_inc0] = lsqr(spakt,spadf - nlstat.rsd_rhs_cur + spadr,1e-6,500);
-            du = lsqr(spakt_rd,spaf_rd + spar(gdofloc) - nlstat.rsd_rhs_cur(gdofloc),...
-                                    1e-6,500);
+            du = lsqr(spakt_rd,spaf_rd,1e-6,500);
                                 
-            nlstat.disp_inc_cur(gdofloc) = du;
-            disp_cur = nlstat.disp_last_iter + nlstat.disp_inc_cur;
+            nlstat.disp_inc_cur(gdofloc) = nlstat.disp_inc_cur(gdofloc) + du;
 
             % nlstat.rsd_rhs_cur_last_subiter = nlstat.rsd_rhs_cur;
 
-            [nlstat.rsd_rhs_cur(gdofloc)] = calresidual(du,spakt_rd,spaf_rd);
+            % [nlstat.rsd_rhs_cur(gdofloc)] = calresidual(du,spakt_rd,spaf_rd);
 
             % criterion for convergence
             
-            [uer,ler,q_cur,ierr] = nlconvergence('smalldisp',disp_cur(gdofloc),...
-                                nlstat.disp_inc_last_subiter(gdofloc),...
+            [uer,ler,q_cur,ierr] = nlconvergence('smalldisp',...
+                                nlstat.n_subiter,...
+                                nlstat.disp_last_iter(gdofloc),...
                                 nlstat.disp_inc_cur(gdofloc),...
+                                du,...
                                 nlstat.q,spakt_rd,spaf_rd,spar(gdofloc));
             nlstat.q = q_cur;
             if (abs(uer) < epsu && abs(ler) < epsp)
-                nlstat.disp_last_iter = disp_cur;
-                nlstat.rsd_rhs_cur_last_iter = nlstat.rsd_rhs_cur;
+                nlstat.disp_last_iter = nlstat.disp_cur;
+                % nlstat.rsd_rhs_cur_last_iter = nlstat.rsd_rhs_cur;
                 break;
             else
                 % need more sub_iter
                 nlstat.disp_inc_last_subiter = nlstat.disp_inc_cur;
-                nlstat.rsd_rhs_cur_last_iter = nlstat.rsd_rhs_cur;
+                % nlstat.rsd_rhs_cur_last_iter = nlstat.rsd_rhs_cur;
             end
         end
     end

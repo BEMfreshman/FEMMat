@@ -1,4 +1,4 @@
-function [ke,dofloc,R,ierr] = shellk_plastic(strtype,D,gi,lcoords,tid,mats1type,...
+function [ke,dofloc,r_cur,ierr] = shellk_plastic(strtype,D,gi,lcoords,tid,mats1type,...
                                             yf,hr,h,lit1,btoltrnsm,u,du)
 
 
@@ -49,7 +49,7 @@ end
 strs_trial = strs + dstrs_trial; % (6,ngint)
 
 ks  = zeros(8,8);
-dRs = zeros(8,1);
+r_cur_s = zeros(8,1);
 
 for i = 1:ngint
     [i1,i2,i3,j1,j2,j3,ierr] = strsIJ(strs_trial(:,i));
@@ -112,7 +112,7 @@ for i = 1:ngint
 
         ks  = ks + b' * depm * b * wc(i) * detj;
 
-        dRs = dRs + b' * dstrs(vldocloc) * wc(i) * detj;
+        r_cur_s = r_cur_s + b' * strs_real_int(vldocloc) * wc(i) * detj;
     elseif (strcmp(strtype,'THINPLATE'))
         ierr = 1;
         return;
@@ -125,11 +125,11 @@ end
 [dofloc] = gidtodofid(gi);
 
 ke = zeros(24,24);
-R = zeros(24,1);
+r_cur = zeros(24,1);
 
 ldofloc = [1,2,7,8,13,14,19,20];
 
 ke(ldofloc,ldofloc) = ks;
-R(ldofloc) = dRs;
+r_cur(ldofloc) = r_cur_s;
 
 end
