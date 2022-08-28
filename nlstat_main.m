@@ -139,7 +139,7 @@ for iload = 1:nstsub
             
             [spakt_rd,spaf_rd,gdofloc,ierr] = applyspc(spciid,model.ispc,model.ipspc,...
                                 model.rpspc,model.nspc,model.jspc,...
-                                model.nspc0,spakt,spaf-spar,gdofloc);
+                                model.nspc0,spakt,spaf,gdofloc);
             if (ierr ~= 0) 
                 return;
             end
@@ -148,7 +148,7 @@ for iload = 1:nstsub
 
             % solve disp_inc
             % [disp_inc0] = lsqr(spakt,spadf - nlstat.rsd_rhs_cur + spadr,1e-6,500);
-            du = lsqr(spakt_rd,spaf_rd,1e-6,500);
+            du = lsqr(spakt_rd,spaf_rd-spar(gdofloc),1e-6,500);
                                 
             nlstat.disp_inc_cur(gdofloc) = nlstat.disp_inc_cur(gdofloc) + du;
 
@@ -163,7 +163,7 @@ for iload = 1:nstsub
                                 nlstat.disp_last_iter(gdofloc),...
                                 nlstat.disp_inc_cur(gdofloc),...
                                 du,...
-                                nlstat.q,spakt_rd,spaf_rd,spar(gdofloc));
+                                nlstat.q,spakt_rd,spaf_rd,spaf_rd-spar(gdofloc));
             nlstat.q = q_cur;
             if (abs(uer) < epsu && abs(ler) < epsp)
                 nlstat.disp_last_iter = nlstat.disp_cur;
