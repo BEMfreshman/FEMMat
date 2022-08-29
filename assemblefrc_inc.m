@@ -35,8 +35,8 @@ for i = 1:n
         f   = rpfrc(ip_rfrc);
         ni   = rpfrc(ip_rfrc+1:ip_rfrc+3);
         
-        % df = (cofload_cur - cofload_prev) * f;
-        f_cur = cofload_cur * f;
+        f_cur = (cofload_cur - cofload_prev) * f;
+        % f_cur = cofload_cur * f;
 
         [spaf,ierr] = frcongrid(g,cid,f_cur,ni,spaf);
     else

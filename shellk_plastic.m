@@ -1,5 +1,6 @@
 function [ke,dofloc,r_cur,ierr] = shellk_plastic(strtype,D,gi,lcoords,tid,mats1type,...
-                                            yf,hr,h,lit1,btoltrnsm,u,du)
+                                            yf,hr,h,lit1,btoltrnsm,n_subiter,...
+                                            u,du)
 
 
 order = 2;
@@ -50,6 +51,8 @@ strs_trial = strs + dstrs_trial; % (6,ngint)
 
 ks  = zeros(8,8);
 r_cur_s = zeros(8,1);
+
+ldofloc = [1,2,7,8,13,14,19,20];
 
 for i = 1:ngint
     [i1,i2,i3,j1,j2,j3,ierr] = strsIJ(strs_trial(:,i));
@@ -111,8 +114,10 @@ for i = 1:ngint
         end
 
         ks  = ks + b' * depm * b * wc(i) * detj;
-
-        r_cur_s = r_cur_s + b' * strs_real_int(vldocloc) * wc(i) * detj;
+        
+        if (n_subiter ~= 1)
+            r_cur_s = r_cur_s + b' * strs_real_int(vldocloc) * wc(i) * detj;
+        end
     elseif (strcmp(strtype,'THINPLATE'))
         ierr = 1;
         return;
@@ -127,7 +132,7 @@ end
 ke = zeros(24,24);
 r_cur = zeros(24,1);
 
-ldofloc = [1,2,7,8,13,14,19,20];
+
 
 ke(ldofloc,ldofloc) = ks;
 r_cur(ldofloc) = r_cur_s;

@@ -1,6 +1,6 @@
 function [ke,dofloc,r_cur,ierr] = quad4k_plastic(eid,ietype,ielem,iegrid,rgrid,ipelem,rpelem, ...
                               iprop,ipprop,rpprop,imat,ipmat,rpmat,...
-                              imats,ipmats,rpmats,u,du)
+                              imats,ipmats,rpmats,n_subiter,u,du)
     % build tangent stiffness matrix
     % reference Ying Youquan book 3-6-25 for its meaning
     % Book Name <Nonlinear Finite Element Method fundament> 
@@ -106,7 +106,7 @@ function [ke,dofloc,r_cur,ierr] = quad4k_plastic(eid,ietype,ielem,iegrid,rgrid,i
         end
 
         [ke,dofloc,r_cur,ierr] = shellk_plastic(strtype,D,gi,lcoords,tid,...
-                            mats1type,yf,hr,h,lit1,btoltrnsm,u,du);
+                            mats1type,yf,hr,h,lit1,btoltrnsm,n_subiter,u,du);
         if (ierr ~= 0)
             return
         end

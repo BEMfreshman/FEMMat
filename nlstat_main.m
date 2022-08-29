@@ -19,9 +19,6 @@ nspc  = model.nspc;
 nfrc = model.nfrc;
 npres = model.npres;
 
-spaf = sparse(ngrid*6,1);
-
-spar = sparse(ngrid*6,1);
 
 % nonlinear state
 nlstat.itime = 0;
@@ -33,8 +30,7 @@ nlstat.n_iter = 0;
 nlstat.n_subiter = 0;
 
 % disp 
-nlstat.disp_inc_cur = zeros(ngrid*6,1);
-nlstat.disp_inc_last_subiter = zeros(ngrid*6,1);
+
 nlstat.disp_last_iter = zeros(ngrid*6,1);
 nlstat.disp_cur = zeros(ngrid*6,1);
 
@@ -67,9 +63,8 @@ for iload = 1:nstsub
     facloads = linspace(0,1,maxiter+1);
 
     nlstat.n_iter = 0;
-    nlstat.q = 0.99;
     
-    nlstat.disp_cur = nlstat.disp_last_iter;
+    
     while(nlstat.n_iter <= maxiter)
     
         % incr start
@@ -77,6 +72,9 @@ for iload = 1:nstsub
         
         cofload_prev = facloads(nlstat.n_iter);
         cofload_cur  = facloads(nlstat.n_iter + 1); % skip first element, it is 0
+        
+        spaf = sparse(ngrid*6,1);
+        spar = sparse(ngrid*6,1);
         
         if (nfrc ~=0)
             [spaf,ierr] = assemblefrc_inc(loadiid,loaduid,model.ifrc,...
@@ -89,7 +87,11 @@ for iload = 1:nstsub
             
         end
 
+        nlstat.q = 0.99;
         nlstat.n_subiter = 0;
+        nlstat.disp_inc_cur = zeros(ngrid*6,1);
+        nlstat.disp_inc_last_subiter = zeros(ngrid*6,1);
+    
         while(nlstat.n_subiter <= max_sub_niter)
             
             nlstat.n_subiter = nlstat.n_subiter + 1;
@@ -108,12 +110,14 @@ for iload = 1:nstsub
                 elseif (ietype == 4)
                     % cqpstn
                     
+                    % to do check the second step
                     [ket,dofloc,r_cur,ierr] = quad4k_plastic(eid,ietype,...
                                 model.ielem,model.iegrid,model.rgrid,...
                                 model.ipelem,model.rpelem, model.iprop,...
                                 model.ipprop,model.rpprop,model.imat,...
                                 model.ipmat,model.rpmat,model.imats,...
                                 model.ipmats,model.rpmats,...
+                                nlstat.n_subiter,...
                                 nlstat.disp_last_iter,nlstat.disp_inc_cur);
                             
                     if (ierr ~= 0)
@@ -166,7 +170,8 @@ for iload = 1:nstsub
                                 nlstat.q,spakt_rd,spaf_rd,spaf_rd-spar(gdofloc));
             nlstat.q = q_cur;
             if (abs(uer) < epsu && abs(ler) < epsp)
-                nlstat.disp_last_iter = nlstat.disp_cur;
+                nlstat.disp_last_iter = nlstat.disp_last_iter...
+                                + nlstat.disp_inc_cur;
                 % nlstat.rsd_rhs_cur_last_iter = nlstat.rsd_rhs_cur;
                 break;
             else
@@ -176,6 +181,8 @@ for iload = 1:nstsub
             end
         end
     end
+    
+    disp = nlstat.disp_last_iter;
 end
 
 end
