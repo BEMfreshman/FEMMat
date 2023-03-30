@@ -44,8 +44,8 @@ function [spak,spaf,gdofloc,ierr] = applyspc(spcid,ispc,ipspc,rpspc,nspc,jspc,..
 
             ndof = length(dofs);
 
-            for j = 1: ndof
-                dof = dofs(j);
+            for k = 1: ndof
+                dof = dofs(k);
 
                 spaf = spaf - disp * spak(:,dof);
                 spaf(dof) = 0;
@@ -54,41 +54,12 @@ function [spak,spaf,gdofloc,ierr] = applyspc(spcid,ispc,ipspc,rpspc,nspc,jspc,..
             end
         end
     end
-    
-%     for i = 1:ngrid
-%         gi = ipspc(iti);
-%         iti = iti + 1;
-%         ci = ipspc(iti);
-%         iti = iti + 1;
-% 
-%         disp = rpspc(itr);
-%         itr = itr + 1;
-% 
-%         sta_dof = 6 * (gi - 1);
-% 
-%         di = repmat(ci,6,1);
-%         dofs = floor(mod(di,10.^[6:-1:1]'./10.^[5:-1:0]'));
-%         dofs(dofs == 0) = [];
-% 
-%         dofs  = dofs + sta_dof;
-% 
-%         ndof = length(dofs);
-% 
-%         gdofloc (gdofoc == dofs) = [];
-%         for j = 1: ndof
-%             dof = dofs(j);
-% 
-%             spaf = spaf - disp * spak(:,dof);
-%             spaf(dof) = 0;
-%             spak(:,dof) = 0;
-%             spak(dof,:) = 0;
-%         end
-%     end
 
     % delete all zero row and col in spak
-    gdofloc(~any(spak,2)) = [];
-    spaf(~any(spak,2))    = [];
-    spak(~any(spak,2),:)  = [];
-    spak(:,~any(spak,1))  = [];
+    % delete on 2023-3-30
+%     gdofloc(~any(spak,2)) = [];
+%     spaf(~any(spak,2))    = [];
+%     spak(~any(spak,2),:)  = [];
+%     spak(:,~any(spak,1))  = [];
 
 end

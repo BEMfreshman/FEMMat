@@ -1,0 +1,30 @@
+
+output,opti
+output,punch
+
+subcase 1
+spc = 1
+load = 1
+disp = all
+
+begin bulk
+
+grid           1       0       0       0       0
+grid           2       0      15       0       0
+grid           3       0       0      15       0
+grid           4       0       0       0      15
+grid           5       0      15      15       0
+
+$ X AXIS
+crod           1       1       1       2
+
+prod           1       1     0.5      20
+
+mat1           1  210000             0.3  7.85-9
+
+spc            1       1  123456       0
+force          1       2       0     100       1       0       0
+$pload          2      -4       1       2       3       4
+$pload          3      -1       1       2       5
+
+endbulk

@@ -157,39 +157,42 @@ nstt   = model.nstsub;   % number of static analysis (include linear and nonline
 nnlstt = model.nnlstt;   % number of nonlinear static analysis
 
 % hard code for static analysis
-% nstt = 1;
-% nnlstt = 0;
-% 
-% model.nstsub = 1;
-% model.istsub = zeros(5,nstt);
-% model.istsub(1,1) = 1;
-% model.istsub(2,1) = 1;
-% model.istsub(3,1) = 1;
-% model.istsub(4,1) = 1;
-% model.istsub(5,1) = 1;
-
-
-% hard code for nonlinear static analysis
 nstt = 1;
-nnlstt = 1;
-
-nsttot = nstt + nnlstt;
+nnlstt = 0;
 
 model.nstsub = 1;
-model.istsub = zeros(5,nsttot);
+model.istsub = zeros(5,nstt);
 model.istsub(1,1) = 1;
-model.istsub(2,1) = 2;
+model.istsub(2,1) = 1;
 model.istsub(3,1) = 1;
 model.istsub(4,1) = 1;
 model.istsub(5,1) = 1;
-model.istsub(6,1) = 1;
+
+
+% hard code for nonlinear static analysis
+% nstt = 1;
+% nnlstt = 1;
+% 
+% nsttot = nstt + nnlstt;
+% 
+% model.nstsub = 1;
+% model.istsub = zeros(5,nsttot);
+% model.istsub(1,1) = 1;
+% model.istsub(2,1) = 2;
+% model.istsub(3,1) = 1;
+% model.istsub(4,1) = 1;
+% model.istsub(5,1) = 1;
+% model.istsub(6,1) = 1;
+
+% hard code for mode analysis
 
 
 
 %% pre-process
+filename = 'test/rod.fem';
 %filename = "test/48model.fem";
 %filename = 'test/50elem_plane.bdf';
-filename = 'test/simpleNL.bdf';
+%filename = 'test/simpleNL.bdf';
 
 [model,ierr] = readfem(filename,model);
 if (ierr ~=0 ) 
@@ -215,7 +218,7 @@ if (ierr ~= 0)
     error('fail in prep');
 end
 
-%% solver
+%% linear/nonlinear solver
 
 if (nstt - nnlstt ~= 0)
    % linear static 
@@ -229,6 +232,8 @@ if (ierr ~= 0)
     error('fail in solver')
 end
 
+%% mode solver
+% Todo
 
 %% visualization
 
@@ -279,7 +284,7 @@ else
     [X,Y,Z] = meshgrid(xs,ys,zs);
 
     V = griddata(model.rgrid(1,:)',model.rgrid(2,:)',model.rgrid(3,:)',...
-        dispx,X,Y,Z);
+        disx,X,Y,Z);
 
     isosurface(X,Y,Z,V);
 end

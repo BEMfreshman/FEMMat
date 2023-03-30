@@ -89,7 +89,8 @@ for iload = 1:nstsub
         return;
     end
     % solve
-    
+    % to do
+    % write a file on the disk and use MUMPS to solve it
     [disp0] = lsqr(spak,spaf,1e-6,500);
     
     

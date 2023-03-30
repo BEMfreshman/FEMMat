@@ -70,6 +70,10 @@ function [model,ierr] = bulkscan(fid,model)
             model.nprop = model.nprop + 1;
             model.lipprop = model.lipprop + 1;
             model.lrpprop = model.lrpprop + 1;
+        elseif (strncmpi(line(1:4),'PROD',4))
+            model.nprop = model.nprop + 1;
+            model.lipprop = model.lipprop + 1;
+            model.lrpprop = model.lrpprop + 4;
             
         elseif (strncmpi(wline(1:6),'CQUAD4',6))
             model.nelem = model.nelem + 1;
@@ -82,14 +86,19 @@ function [model,ierr] = bulkscan(fid,model)
             
             model.liegrid = model.liegrid + 4;
             model.lipelem = model.lipelem + 1;
+        elseif (strncmpi(wline(1:4),'CROD',4))
+            model.nelem = model.nelem + 1;
+            
+            model.liegrid = model.liegrid + 2;
+            model.lipelem = model.lipelem + 1;
         elseif(strncmpi(wline(1:6),'NLPARM',6))
             model.nnlparm = model.nnlparm + 1;
         elseif (strncmpi(wline(1:1),'*',1) || ...
                 strncmpi(wline(1:1),'+',1))
             continue;
         else
-            ierr = 1;
-            return;
+            % no key words were hit here
+            % just skip
         end
     end
 

@@ -1,26 +1,46 @@
 function [wline,hasstr] = preprocesstext(line,maxlen)
 
-    if (mod(maxlen,8)~=0)
-        return;
-    end
+    rt = strfind(line,',');
 
-    len = length(line);
+    if (isempty(rt))
+        if (mod(maxlen,8)~=0)
+            return;
+        end
 
-    if (len == maxlen)
-        wline = line;
+        len = length(line);
+
+        if (len == maxlen)
+            wline = line;
+        else
+            wline = [line,repmat(' ',1,maxlen - len)];
+        end
+
+        nf = maxlen / 8;
+
+        hasstr = zeros(nf,1);
+
+        sta = linspace(1,8*(nf-1)+1,nf)';
+        ed  = sta + 7;
+
+        for i = 1:nf
+            hasstr(i) = ~isempty(strtrim(wline(sta(i):ed(i))));
+        end
     else
-        wline = [line,repmat(' ',1,maxlen - len)];
-    end
+        % free mode
+        wline = line;
 
-    nf = maxlen / 8;
+        c = cell(9,1);
+        cc = strsplit(wline,',');
 
-    hasstr = zeros(nf,1);
+        c(1:length(cc)) = cc;
 
-    sta = linspace(1,8*(nf-1)+1,nf)';
-    ed  = sta + 7;
+        c = strtrim(c);
 
-    for i = 1:nf
-        hasstr(i) = ~isempty(strtrim(wline(sta(i):ed(i))));
+        hasstr = zeros(9,1);
+
+        for i = 1 : 9
+            hasstr(i) = ~isempty(c{i});
+        end
     end
 
 end

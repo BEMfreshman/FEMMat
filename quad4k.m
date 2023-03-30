@@ -35,7 +35,7 @@ for i = 1:4
 end
 
 iptype = iprop(2,pid);
-if (iptype == 1) then
+if (iptype == 1)
     
     % PSHELL
 

@@ -44,12 +44,16 @@ function [model,ierr] = bulkread(fid,model)
             [model,ierr] = cquad4reader(wline,fid,model);
         elseif (strncmpi(line(1:6),'CQPSTN',6))
             [model,ierr] = cqpstnreader(wline,fid,model);
+        elseif (strncmpi(line(1:4),'CROD',4))
+            [model,ierr] = crodreader(wline,fid,model);
             
             % PROP
         elseif (strncmpi(line(1:6),'PSHELL',6))
             [model,ierr] = pshellreader(wline,fid,model);
         elseif (strncmpi(line(1:6),'PPLANE',6))
             [model,ierr] = pplanereader(wline,fid,model);
+        elseif (strncmpi(line(1:4),'PROD',4))
+            [model,ierr] = prodreader(wline,fid,model);
 
             % MAT
         elseif (strncmpi(line(1:4),'MAT1',4))

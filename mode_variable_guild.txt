@@ -1,0 +1,9 @@
+/*
+    for mode analysis
+*/
+
+isubeg(*,nsubeg):
+
+    (1,) - subid
+    (2,) - method id  : point to EIGR or EIGRL
+    (3,) - spc id
