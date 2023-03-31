@@ -10,8 +10,8 @@ nelem = model.nelem;
 ielem = model.ielem;
 
 ngrid   = model.ngrid;
-nfrc = model.nfrc;
-npres  = model.npres;
+nfrc    = model.nfrc;
+npres   = model.npres;
 nspc    = model.nspc;
 
 spak = sparse(ngrid*6,ngrid*6);
@@ -34,7 +34,21 @@ for iload = 1:nstsub
     for ie = 1: nelem
         eiid   = ielem(1,ie);
         ietype = ielem(2,ie);
-        if (ietype == 3)
+        if (ietype == 1) 
+            [kel,dofloc,ierr] = rodk(eiid,ietype,model);
+            
+            if (ierr ~= 0)
+                return;
+            end
+            
+            [ltobtrnsm,~] = linecord(eiid,model.ielem,model.iegrid,...
+                                     model.rgrid);
+            [spak,ierr] = assemblek(kel,dofloc,ltobtrnsm,spak);
+            if (ierr ~=0)
+                return;
+            end
+            
+        elseif (ietype == 3)
             % quad4
             % kel (24,24)
             [kel,dofloc,ierr] = quad4k(eiid,ietype,model.ielem,model.iegrid,model.rgrid,...
@@ -65,6 +79,9 @@ for iload = 1:nstsub
     if (nfrc ~= 0)
         [spaf,ierr] = assemblefrc(loadiid,loaduid,model.ifrc,model.ipfrc,model.rpfrc,...
                             model.jfrc,model.nfrc,model.nfrc0,spaf);
+        if (ierr ~= 0)
+            return;
+        end
         
     end
     
@@ -91,14 +108,18 @@ for iload = 1:nstsub
     % solve
     % to do
     % write a file on the disk and use MUMPS to solve it
-    [disp0] = lsqr(spak,spaf,1e-6,500);
-    
-    
-    disp = zeros(ngrid*6,1);
-    disp(gdofloc) = disp0;
-    
-    disp = reshape(disp,6,[])';
-    
+%     [disp0] = lsqr(spak,spaf,1e-6,500);
+% 
+%     disp = zeros(ngrid*6,1);
+%     disp(gdofloc) = disp0;
+%     
+%     disp = reshape(disp,6,[])';
+
+    ndof = ngrid*6;
+    ierr = wrtkf(spak,spaf,ndof);
+    if (ierr ~= 0)
+        return;
+    end
 end
 
 ierr = 0;

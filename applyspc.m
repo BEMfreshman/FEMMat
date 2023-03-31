@@ -52,6 +52,9 @@ function [spak,spaf,gdofloc,ierr] = applyspc(spcid,ispc,ipspc,rpspc,nspc,jspc,..
                 spak(:,dof) = 0;
                 spak(dof,:) = 0;
             end
+            
+            % more codes are needed here to delete rows/cols when
+            % its dof has been fixed
         end
     end
 

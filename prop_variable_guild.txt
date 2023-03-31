@@ -18,7 +18,9 @@ PSHELL:
 
 PPLANE:
     (1,.) - MID
-    
+
+PROD:
+    (1,.) - MID  
 
 rpprop(*)
 
@@ -32,3 +34,9 @@ PSHELL:
 
 PPLANE:
     (1,.) - T
+
+PROD:
+    (1,.) - A
+    (2,.) - J
+    (3,.) - C
+    (4,.) - NSM
