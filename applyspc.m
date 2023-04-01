@@ -46,6 +46,8 @@ function [spak,spaf,gdofloc,ierr] = applyspc(spcid,ispc,ipspc,rpspc,nspc,jspc,..
 
             for k = 1: ndof
                 dof = dofs(k);
+                
+                gdofloc(dof) = 0;
 
                 spaf = spaf - disp * spak(:,dof);
                 spaf(dof) = 0;
@@ -60,6 +62,9 @@ function [spak,spaf,gdofloc,ierr] = applyspc(spcid,ispc,ipspc,rpspc,nspc,jspc,..
 
     % delete all zero row and col in spak
     % delete on 2023-3-30
+    gdofloc(gdofloc == 0) = [];
+    spaf = spaf(gdofloc);
+    spak = spak(gdofloc,gdofloc);
 %     gdofloc(~any(spak,2)) = [];
 %     spaf(~any(spak,2))    = [];
 %     spak(~any(spak,2),:)  = [];

@@ -110,16 +110,28 @@ for iload = 1:nstsub
     % write a file on the disk and use MUMPS to solve it
 %     [disp0] = lsqr(spak,spaf,1e-6,500);
 % 
-%     disp = zeros(ngrid*6,1);
-%     disp(gdofloc) = disp0;
-%     
-%     disp = reshape(disp,6,[])';
-
-    ndof = ngrid*6;
-    ierr = wrtkf(spak,spaf,ndof);
+    ngdofloc = length(gdofloc);
+    ierr = wrtkf(spak,spaf,ngdofloc);
     if (ierr ~= 0)
         return;
     end
+    
+    % call mumps solve
+    % command = 'cd wslsolver;wsl ./prog;cd ..';
+    
+    %command = 'wslsolver\run.bat';
+    command = 'wsl cd wslsolver; ./prog';
+    [status,stdout] = system(command);
+    
+    [disp0,ierr] = rtrrst(ngdofloc);
+    if (ierr ~= 0 )
+        return
+    end
+    
+    disp = zeros(ngrid*6,1);
+    disp(gdofloc) = disp0;
+    disp = reshape(disp,6,[])';
+    
 end
 
 ierr = 0;

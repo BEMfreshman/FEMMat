@@ -2,7 +2,7 @@ function [ierr] = wrtkf(spak,spaf,ndof)
 
     ierr = 0;
     
-    fid = fopen('spak_spaf.txt','w');
+    fid = fopen('./wslsolver/mat.txt','w');
     if (fid < 0)
         ierr = 1;
     end
