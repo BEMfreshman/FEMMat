@@ -61,7 +61,7 @@ for i = 1:ngint
     end
 
     if (yf == 1)
-        % vos Mises Yield function criterion
+        % von Mises Yield function criterion
         F1 = j2 - lit1 ^ 2;
     else
         ierr = 1;

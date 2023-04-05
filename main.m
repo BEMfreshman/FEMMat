@@ -157,32 +157,32 @@ nstt   = model.nstsub;   % number of static analysis (include linear and nonline
 nnlstt = model.nnlstt;   % number of nonlinear static analysis
 
 % hard code for static analysis
-nstt = 1;
-nnlstt = 0;
-
-model.nstsub = 1;
-model.istsub = zeros(5,nstt);
-model.istsub(1,1) = 1;
-model.istsub(2,1) = 1;
-model.istsub(3,1) = 1;
-model.istsub(4,1) = 1;
-model.istsub(5,1) = 1;
-
-
-% hard code for nonlinear static analysis
 % nstt = 1;
-% nnlstt = 1;
-% 
-% nsttot = nstt + nnlstt;
+% nnlstt = 0;
 % 
 % model.nstsub = 1;
-% model.istsub = zeros(5,nsttot);
+% model.istsub = zeros(5,nstt);
 % model.istsub(1,1) = 1;
-% model.istsub(2,1) = 2;
+% model.istsub(2,1) = 1;
 % model.istsub(3,1) = 1;
 % model.istsub(4,1) = 1;
 % model.istsub(5,1) = 1;
-% model.istsub(6,1) = 1;
+
+
+% hard code for nonlinear static analysis
+nstt = 1;
+nnlstt = 1;
+
+nsttot = nstt + nnlstt;
+
+model.nstsub = 1;
+model.istsub = zeros(5,nsttot);
+model.istsub(1,1) = 1;
+model.istsub(2,1) = 2;
+model.istsub(3,1) = 1;
+model.istsub(4,1) = 1;
+model.istsub(5,1) = 1;
+model.istsub(6,1) = 1;
 
 % hard code for mode analysis
 

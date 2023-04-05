@@ -3,7 +3,7 @@ function [disp,ierr] = nlstat_main(model)
 % nonlinear static analysis function
 %
 
-%  reference book: Chinese nonlinear FEM basis  Peking Unverisity Press.
+%  reference book: Chinese  <nonlinear FEM basis>  Peking Unverisity Press.
 %  Yin YouQuan 
 %  Chapter 1   and   Chapter 3-6
 
@@ -30,9 +30,9 @@ nlstat.n_iter = 0;
 nlstat.n_subiter = 0;
 
 % disp 
-
-nlstat.disp_last_iter = zeros(ngrid*6,1);
-nlstat.disp_cur = zeros(ngrid*6,1);
+nlstat.disp_last_time_step = zeros(ngrid*6,1);
+nlstat.disp_cur_last_iter  = zeros(ngrid*6,1);
+nlstat.disp_cur            = zeros(ngrid*6,1);
 
 % residual rhs
 nlstat.rsd_rhs_cur = zeros(ngrid*6,1);
@@ -104,31 +104,47 @@ for iload = 1:nstsub
                 eid   = ielem(1,ie);
                 ietype = ielem(2,ie);
                 
-                if (ietype == 3)
+                if (ietype == 1)
+                    % rod
+                    [ket,dofloc,r_cur,ierr] = rodk_plastic(eiid,ietype,model,nlstat);
+                    
+                    if (ierr ~= 0)
+                        return;
+                    end
+                    
+                    [ltobtrnsm,~] = linecord(eiid,model.ielem,model.iegrid,...
+                                                model.rgrid);
+                    [spak,ierr] = assemblek(kel,dofloc,ltobtrnsm,spak);
+                    if (ierr~=0)
+                        return;
+                    end
+                
+                elseif (ietype == 3)
                     % cquad4
                     
                 elseif (ietype == 4)
                     % cqpstn
                     
                     % to do check the second step
-                    [ket,dofloc,r_cur,ierr] = quad4k_plastic(eid,ietype,...
-                                model.ielem,model.iegrid,model.rgrid,...
-                                model.ipelem,model.rpelem, model.iprop,...
-                                model.ipprop,model.rpprop,model.imat,...
-                                model.ipmat,model.rpmat,model.imats,...
-                                model.ipmats,model.rpmats,...
-                                nlstat.n_subiter,...
-                                nlstat.disp_last_iter,nlstat.disp_inc_cur);
-                            
-                    if (ierr ~= 0)
-                        return;
-                    end
-                    
-                    [ltobtrnsm,~] = shellcord(eid,model.ielem,...
-                                        model.iegrid,model.rgrid);
-
-                    [spakt,ierr] = assemblek(ket,dofloc,ltobtrnsm,spakt);
-                    spar(dofloc)  = spar(dofloc) + r_cur;
+                    % 2023-4-4 there are some problems 
+%                     [ket,dofloc,r_cur,ierr] = quad4k_plastic(eid,ietype,...
+%                                 model.ielem,model.iegrid,model.rgrid,...
+%                                 model.ipelem,model.rpelem, model.iprop,...
+%                                 model.ipprop,model.rpprop,model.imat,...
+%                                 model.ipmat,model.rpmat,model.imats,...
+%                                 model.ipmats,model.rpmats,...
+%                                 nlstat.n_subiter,...
+%                                 nlstat.disp_last_iter,nlstat.disp_inc_cur);
+%                             
+%                     if (ierr ~= 0)
+%                         return;
+%                     end
+%                     
+%                     [ltobtrnsm,~] = shellcord(eid,model.ielem,...
+%                                         model.iegrid,model.rgrid);
+% 
+%                     [spakt,ierr] = assemblek(ket,dofloc,ltobtrnsm,spakt);
+%                     spar(dofloc)  = spar(dofloc) + r_cur;
 
                 else
                     if (ierr ~= 0)
